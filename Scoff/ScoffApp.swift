@@ -12,7 +12,9 @@ import Firebase
 struct ScoffApp: App {
     
     init() {
-      FirebaseApp.configure()
+        FirebaseApp.configure()
+        UINavigationBar.appearance().barTintColor = .white
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
     }
     
     var body: some Scene {

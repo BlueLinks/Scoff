@@ -7,9 +7,46 @@
 
 import SwiftUI
 
+struct RestaurantSelectView: View {
+    var body: some View {
+            VStack{
+                Text("This is the select view")
+                NavigationLink(destination: Text("This is the restaurant view")){
+                    Text("Tap Here")
+                }
+            }
+                .navigationTitle("Select")
+    }
+}
+
 struct RestaurantView: View {
     var body: some View {
-        Text("This is the Restaurant view")
+        NavigationView{
+            ZStack {
+                Image("Splash")
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.bottom)
+                
+                NavigationLink(destination: RestaurantSelectView()){
+                    HStack{
+                        Text("Find a restraunt ")
+                            .font(.largeTitle)
+                            
+                        Image(systemName : "chevron.right")
+                            .font(.largeTitle)
+                    }.padding()
+                    .background(Color.blue)
+                    .clipShape(Capsule())
+                    
+                }
+
+                    
+                
+            }
+            .navigationTitle("Scoff")
+            .foregroundColor(.white)
+        }
     }
 }
 
