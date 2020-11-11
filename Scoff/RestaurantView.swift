@@ -22,30 +22,43 @@ struct RestaurantSelectView: View {
 struct RestaurantView: View {
     var body: some View {
         NavigationView{
-            ZStack {
-                Image("Splash")
-                    .resizable()
-                    .scaledToFill()
-                    .edgesIgnoringSafeArea(.bottom)
-                
-                NavigationLink(destination: RestaurantSelectView()){
-                    HStack{
-                        Text("Find a restaurant ")
-                            .font(.largeTitle)
-                            
-                        Image(systemName : "chevron.right")
-                            .font(.largeTitle)
-                    }.padding()
-                    .background(Color.blue)
-                    .clipShape(Capsule())
-                    
-                }
 
+                ZStack {
                     
+                    
+                    Image("Splash")
+                        .resizable()
+                        .scaledToFill()
+                        .edgesIgnoringSafeArea(.all)
+                    
+                    VStack{
+                        
+                        
+                        Text("Scoff")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                        
+                        Spacer()
+                        
+                    NavigationLink(destination: RestaurantSelectView()){
+                        HStack{
+                            Text("Find a restaurant ")
+                                
+                                
+                                
+                            Image(systemName : "chevron.right")
+                        }
+                        .font(.title)
+                        .padding()
+                        .background(Color.blue)
+                        .clipShape(Capsule())
+                        .foregroundColor(.white)
+                        
+                    }
+                        Spacer()
+                }
                 
-            }
-            .navigationTitle("Scoff")
-            .foregroundColor(.white)
+                }
         }
     }
 }
