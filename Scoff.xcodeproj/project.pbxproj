@@ -9,21 +9,27 @@
 /* Begin PBXBuildFile section */
 		05FED027713AC84446400F21 /* Pods_Scoff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA9329E19DF9C069A4F22DE0 /* Pods_Scoff.framework */; };
 		93030875255C264000A619B0 /* ScoffApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93030874255C264000A619B0 /* ScoffApp.swift */; };
-		93030877255C264000A619B0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93030876255C264000A619B0 /* ContentView.swift */; };
+		93030877255C264000A619B0 /* RestaurantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93030876255C264000A619B0 /* RestaurantView.swift */; };
 		93030879255C264300A619B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93030878255C264300A619B0 /* Assets.xcassets */; };
 		9303087C255C264300A619B0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9303087B255C264300A619B0 /* Preview Assets.xcassets */; };
 		93030885255C30F100A619B0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93030884255C30F100A619B0 /* GoogleService-Info.plist */; };
+		9393D5E8255C3938007E36B1 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393D5E7255C3938007E36B1 /* AppView.swift */; };
+		9393D5EB255C39E9007E36B1 /* OrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393D5EA255C39E9007E36B1 /* OrderView.swift */; };
+		9393D5EF255C3A3F007E36B1 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393D5EE255C3A3F007E36B1 /* UserView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		78288C1BBE4DDCDA4E8E51BA /* Pods-Scoff.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Scoff.debug.xcconfig"; path = "Target Support Files/Pods-Scoff/Pods-Scoff.debug.xcconfig"; sourceTree = "<group>"; };
 		93030871255C264000A619B0 /* Scoff.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scoff.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93030874255C264000A619B0 /* ScoffApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoffApp.swift; sourceTree = "<group>"; };
-		93030876255C264000A619B0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		93030876255C264000A619B0 /* RestaurantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantView.swift; sourceTree = "<group>"; };
 		93030878255C264300A619B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9303087B255C264300A619B0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9303087D255C264300A619B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93030884255C30F100A619B0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9393D5E7255C3938007E36B1 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+		9393D5EA255C39E9007E36B1 /* OrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderView.swift; sourceTree = "<group>"; };
+		9393D5EE255C3A3F007E36B1 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		D093DDE5717D287BFAC70F4B /* Pods-Scoff.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Scoff.release.xcconfig"; path = "Target Support Files/Pods-Scoff/Pods-Scoff.release.xcconfig"; sourceTree = "<group>"; };
 		EA9329E19DF9C069A4F22DE0 /* Pods_Scoff.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Scoff.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -62,7 +68,10 @@
 			isa = PBXGroup;
 			children = (
 				93030874255C264000A619B0 /* ScoffApp.swift */,
-				93030876255C264000A619B0 /* ContentView.swift */,
+				9393D5E7255C3938007E36B1 /* AppView.swift */,
+				93030876255C264000A619B0 /* RestaurantView.swift */,
+				9393D5EA255C39E9007E36B1 /* OrderView.swift */,
+				9393D5EE255C3A3F007E36B1 /* UserView.swift */,
 				93030878255C264300A619B0 /* Assets.xcassets */,
 				9303087D255C264300A619B0 /* Info.plist */,
 				93030884255C30F100A619B0 /* GoogleService-Info.plist */,
@@ -210,8 +219,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93030877255C264000A619B0 /* ContentView.swift in Sources */,
+				93030877255C264000A619B0 /* RestaurantView.swift in Sources */,
+				9393D5EB255C39E9007E36B1 /* OrderView.swift in Sources */,
+				9393D5EF255C3A3F007E36B1 /* UserView.swift in Sources */,
 				93030875255C264000A619B0 /* ScoffApp.swift in Sources */,
+				9393D5E8255C3938007E36B1 /* AppView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
