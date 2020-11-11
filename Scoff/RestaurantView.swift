@@ -30,7 +30,7 @@ struct RestaurantView: View {
                 
                 NavigationLink(destination: RestaurantSelectView()){
                     HStack{
-                        Text("Find a restraunt ")
+                        Text("Find a restaurant ")
                             .font(.largeTitle)
                             
                         Image(systemName : "chevron.right")
