@@ -13,8 +13,12 @@
 		93030879255C264300A619B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93030878255C264300A619B0 /* Assets.xcassets */; };
 		9303087C255C264300A619B0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9303087B255C264300A619B0 /* Preview Assets.xcassets */; };
 		93030885255C30F100A619B0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93030884255C30F100A619B0 /* GoogleService-Info.plist */; };
+		931040C425642C1300D8428F /* RestaurantSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931040C325642C1300D8428F /* RestaurantSelectView.swift */; };
+		932BEF6B256C414B006ACD89 /* MenuSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932BEF6A256C414B006ACD89 /* MenuSelectView.swift */; };
+		933E4AD6257E9E6D00353FA6 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933E4AD5257E9E6D00353FA6 /* MenuView.swift */; };
+		9388112C258D0F340037ABF9 /* ViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9388112B258D0F340037ABF9 /* ViewControllerWrapper.swift */; };
+		93881130258D0FAC0037ABF9 /* OrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9388112F258D0FAC0037ABF9 /* OrderView.swift */; };
 		9393D5E8255C3938007E36B1 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393D5E7255C3938007E36B1 /* AppView.swift */; };
-		9393D5EB255C39E9007E36B1 /* OrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393D5EA255C39E9007E36B1 /* OrderView.swift */; };
 		9393D5EF255C3A3F007E36B1 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393D5EE255C3A3F007E36B1 /* UserView.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,8 +31,12 @@
 		9303087B255C264300A619B0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9303087D255C264300A619B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93030884255C30F100A619B0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		931040C325642C1300D8428F /* RestaurantSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantSelectView.swift; sourceTree = "<group>"; };
+		932BEF6A256C414B006ACD89 /* MenuSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSelectView.swift; sourceTree = "<group>"; };
+		933E4AD5257E9E6D00353FA6 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		9388112B258D0F340037ABF9 /* ViewControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerWrapper.swift; sourceTree = "<group>"; };
+		9388112F258D0FAC0037ABF9 /* OrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderView.swift; sourceTree = "<group>"; };
 		9393D5E7255C3938007E36B1 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
-		9393D5EA255C39E9007E36B1 /* OrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderView.swift; sourceTree = "<group>"; };
 		9393D5EE255C3A3F007E36B1 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		D093DDE5717D287BFAC70F4B /* Pods-Scoff.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Scoff.release.xcconfig"; path = "Target Support Files/Pods-Scoff/Pods-Scoff.release.xcconfig"; sourceTree = "<group>"; };
 		EA9329E19DF9C069A4F22DE0 /* Pods_Scoff.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Scoff.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,12 +78,16 @@
 				93030874255C264000A619B0 /* ScoffApp.swift */,
 				9393D5E7255C3938007E36B1 /* AppView.swift */,
 				93030876255C264000A619B0 /* RestaurantView.swift */,
-				9393D5EA255C39E9007E36B1 /* OrderView.swift */,
+				931040C325642C1300D8428F /* RestaurantSelectView.swift */,
+				9388112B258D0F340037ABF9 /* ViewControllerWrapper.swift */,
 				9393D5EE255C3A3F007E36B1 /* UserView.swift */,
+				932BEF6A256C414B006ACD89 /* MenuSelectView.swift */,
+				933E4AD5257E9E6D00353FA6 /* MenuView.swift */,
+				9303087A255C264300A619B0 /* Preview Content */,
 				93030878255C264300A619B0 /* Assets.xcassets */,
 				9303087D255C264300A619B0 /* Info.plist */,
 				93030884255C30F100A619B0 /* GoogleService-Info.plist */,
-				9303087A255C264300A619B0 /* Preview Content */,
+				9388112F258D0FAC0037ABF9 /* OrderView.swift */,
 			);
 			path = Scoff;
 			sourceTree = "<group>";
@@ -123,6 +135,8 @@
 			dependencies = (
 			);
 			name = Scoff;
+			packageProductDependencies = (
+			);
 			productName = Scoff;
 			productReference = 93030871255C264000A619B0 /* Scoff.app */;
 			productType = "com.apple.product-type.application";
@@ -150,6 +164,8 @@
 				Base,
 			);
 			mainGroup = 93030868255C264000A619B0;
+			packageReferences = (
+			);
 			productRefGroup = 93030872255C264000A619B0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -219,11 +235,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				932BEF6B256C414B006ACD89 /* MenuSelectView.swift in Sources */,
+				933E4AD6257E9E6D00353FA6 /* MenuView.swift in Sources */,
 				93030877255C264000A619B0 /* RestaurantView.swift in Sources */,
-				9393D5EB255C39E9007E36B1 /* OrderView.swift in Sources */,
 				9393D5EF255C3A3F007E36B1 /* UserView.swift in Sources */,
 				93030875255C264000A619B0 /* ScoffApp.swift in Sources */,
 				9393D5E8255C3938007E36B1 /* AppView.swift in Sources */,
+				9388112C258D0F340037ABF9 /* ViewControllerWrapper.swift in Sources */,
+				931040C425642C1300D8428F /* RestaurantSelectView.swift in Sources */,
+				93881130258D0FAC0037ABF9 /* OrderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +359,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";

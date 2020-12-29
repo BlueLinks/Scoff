@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>777173222672-d8hdv3es52lgchh7l7ekv04e9n901tg7.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.777173222672-d8hdv3es52lgchh7l7ekv04e9n901tg7</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDQjTVPzA7R7LjsWeJfYdOSpdzdg2rFyTI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>777173222672</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>me.brown.scott.Scoff</string>
+	<key>PROJECT_ID</key>
+	<string>scoff-a30ae</string>
+	<key>STORAGE_BUCKET</key>
+	<string>scoff-a30ae.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:777173222672:ios:3957fd9a35d518060e1195</string>
+	<key>DATABASE_URL</key>
+	<string>https://scoff-a30ae.firebaseio.com</string>
+</dict>
+</plist>

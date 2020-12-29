@@ -7,45 +7,34 @@
 
 import SwiftUI
 
-struct RestaurantSelectView: View {
-    var body: some View {
-            VStack{
-                Text("This is the select view")
-                NavigationLink(destination: Text("This is the restaurant view")){
-                    Text("Tap Here")
-                }
-            }
-                .navigationTitle("Select")
-    }
-}
 
 struct RestaurantView: View {
+    
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         NavigationView{
-
-                ZStack {
+            
+            ZStack {
+                
+                
+                Image("Splash")
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack{
                     
                     
-                    Image("Splash")
-                        .resizable()
-                        .scaledToFill()
-                        .edgesIgnoringSafeArea(.all)
+                    Text("Scoff")
+                        .font(.largeTitle)
+                        .foregroundColor(.white)
                     
-                    VStack{
-                        
-                        
-                        Text("Scoff")
-                            .font(.largeTitle)
-                            .foregroundColor(.white)
-                        
-                        Spacer()
-                        
+                    Spacer()
+                    
                     NavigationLink(destination: RestaurantSelectView()){
                         HStack{
                             Text("Find a restaurant ")
-                                
-                                
-                                
                             Image(systemName : "chevron.right")
                         }
                         .font(.title)
@@ -55,16 +44,25 @@ struct RestaurantView: View {
                         .foregroundColor(.white)
                         
                     }
-                        Spacer()
+                    Spacer()
                 }
                 
-                }
+            }
         }
     }
-}
-
-struct RestaurantView_Previews: PreviewProvider {
-    static var previews: some View {
-        RestaurantView()
+    
+    init() {
+//        UINavigationBar.appearance().backgroundColor = .black
+//        if colorScheme == .dark {
+//            UINavigationBar.appearance().backgroundColor = .black
+//        } else {
+//            UINavigationBar.appearance().backgroundColor = .white
+//        }
+    }
+    
+    struct RestaurantView_Previews: PreviewProvider {
+        static var previews: some View {
+            RestaurantView()
+        }
     }
 }
