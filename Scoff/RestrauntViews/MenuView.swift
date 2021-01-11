@@ -9,21 +9,7 @@ import SwiftUI
 import Firebase
 import URLImage
 
-// For storing items from menu
-struct itemRaw : Identifiable {
-    var id: String
-    var name: String
-    var price : Double
-    var image : String
-}
 
-// For storing extra's for items
-struct extraRaw : Identifiable {
-    var id: String
-    var name: String
-    var price : Double
-    var extraSelected : Bool
-}
 
 // For displaying items
 struct itemCardView : View {
@@ -72,6 +58,25 @@ struct addItemToOrderView : View{
     @State var data : [extraRaw] = []
     @State var userRequests = ""
     @State var orderAmount = 1.00
+    var extrasPrice : Double {
+        var totalExtrasPrice : Double = 0
+        for extra in self.data{
+            if extra.extraSelected {
+                totalExtrasPrice += extra.price
+            }
+            
+        }
+        return totalExtrasPrice
+    }
+    var priceheaderText : String {
+        for extra in self.data{
+            if extra.extraSelected {
+                return "with extras"
+            }
+        }
+        return ""
+        
+    }
     
     @EnvironmentObject var settings: Order
     
@@ -106,26 +111,26 @@ struct addItemToOrderView : View{
                 if !self.data.isEmpty {
                     Section(header: Text("Any Extras?")){
                         ScrollView(.vertical){
-                                // Display Extras
-                                ForEach(data.indices) { index in
-                                    Toggle(isOn: self.$data[index].extraSelected) {
-                                        VStack(alignment: .leading){
-                                            Text("\(self.data[index].name)")
-                                            Text("£\(self.data[index].price, specifier: "%.2f")")
-                                        }
-                                        
+                            // Display Extras
+                            ForEach(data.indices) { index in
+                                Toggle(isOn: self.$data[index].extraSelected) {
+                                    VStack(alignment: .leading){
+                                        Text("\(self.data[index].name)")
+                                        Text("£\(self.data[index].price, specifier: "%.2f")")
                                     }
-                                }.padding(.trailing)
-                                .padding(.leading)
+                                    
+                                }
+                            }.padding(.trailing)
+                            .padding(.leading)
                         }
                     }
                 }
                 Section(header: Text("Any requests for the chef?")){
                     TextField("e.g. no onions", text: $userRequests)
                 }
-                Section(header: Text("Total price for \(orderAmount, specifier: "%.0f") \(item.name)")){
+                Section(header: Text("Total price for \(orderAmount, specifier: "%.0f") \(item.name) \(priceheaderText)")){
                     HStack{
-                        Stepper("£\(orderAmount * item.price, specifier: "%.2f")", value: $orderAmount, in: 1...10)
+                        Stepper("£\(orderAmount * (item.price + extrasPrice), specifier: "%.2f")", value: $orderAmount, in: 1...10)
                     }
                 }
                 // Button for adding item with extra to Order TODO
@@ -236,7 +241,7 @@ struct MenuView: View {
             for newItem in itemList!.documents{
                 
                 // construct new item
-                let item = itemRaw(id: newItem.documentID, name: newItem.get("name") as! String, price: newItem.get("price") as! Double, image: newItem.get("image") as! String)
+                let item = itemRaw(id: newItem.documentID, name: newItem.get("name") as! String, price: newItem.get("price") as! Double, image: newItem.get("image") as! String, vegetarian: newItem.get("vegetarian") as! Bool, vegan: newItem.get("vegan") as! Bool, gluten: newItem.get("gluten") as! Bool)
                 
                 // append new item to list of items
                 self.data.append(item)

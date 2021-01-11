@@ -10,6 +10,7 @@ import Stripe
 
 struct OrderView: View {
     
+    
     @EnvironmentObject var settings: Order
     var body: some View {
         NavigationView{

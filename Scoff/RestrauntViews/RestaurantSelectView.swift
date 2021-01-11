@@ -9,12 +9,7 @@ import SwiftUI
 import Firebase
 import URLImage
 
-// for storing restraunts received from firebase
-struct restaurantRaw : Identifiable {
-    var id: String
-    var name: String
-    var picture: String
-}
+
 
 // View for displaying restraunt details
 struct restaurantCardView : View {

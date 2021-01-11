@@ -35,10 +35,6 @@ struct menuCardView : View {
     }
 }
 
-struct menuRaw : Identifiable {
-    var id: String
-    var name: String
-}
 
 
 struct MenuSelectView: View {

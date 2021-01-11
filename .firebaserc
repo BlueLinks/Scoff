@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "scoff-a30ae"
+    "default": "scoff-a30ae",
+    "Development": "scoff-a30ae"
   }
 }

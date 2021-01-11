@@ -11,6 +11,7 @@ import SwiftUI
 struct RestaurantView: View {
     
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var session: SessionStore
     
     var body: some View {
         NavigationView{

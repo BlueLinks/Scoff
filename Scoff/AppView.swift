@@ -12,6 +12,8 @@ struct AppView: View {
     private var tabsCount: CGFloat = 3
     @EnvironmentObject var settings: Order
     
+    @EnvironmentObject var session: SessionStore
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottomLeading){
@@ -26,9 +28,10 @@ struct AppView: View {
                         }
                     
                     // View for displaying current order and checkout
-                    OrderView()
+                    //ShoppingView(paymentContextDelegate: self.paymentContextDelegate)
+                        OrderView()
                         .tabItem {
-                            Image(systemName: "book")
+                            Image(systemName: "cart")
                             Text("Order")
                         }
                     // View for account settings
@@ -56,24 +59,6 @@ struct AppView: View {
             }
         }
     }
-    
-    //    struct OrderPreferenceKey: PreferenceKey {
-    //        static var defaultValue: PresentableOrder?
-    //
-    //        static func reduce(value: inout PresentableOrder?, nextValue: () -> PresentableOrder?) {
-    //            value = nextValue()
-    //        }
-    //    }
-    //
-    //    struct PresentableOrder: Equatable, Identifiable {
-    //        let id = UUID()
-    //        let name: String?
-    //
-    //        static func == (lhs: PresentableOrder, rhs: PresentableOrder) -> Bool {
-    //            lhs.id == rhs.id
-    //        }
-    //    }
-    
     
 }
 
