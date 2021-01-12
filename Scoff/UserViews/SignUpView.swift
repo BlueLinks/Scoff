@@ -19,6 +19,7 @@ struct SignUpView : View {
     @State var confirmPassword: String = ""
     @State var loading = false
     @State var error = false
+    @State var passwordMatchAlert = false
     
     let db = Firestore.firestore()
 
@@ -74,7 +75,11 @@ struct SignUpView : View {
                 Text("ahhh crap")
             }
             Button(action: {
+                if password == confirmPassword{
                 signUp()
+                } else {
+                    passwordMatchAlert = true
+                }
             }) {
                 HStack{
                     Spacer()
@@ -84,6 +89,8 @@ struct SignUpView : View {
                 .padding().background(Color.green)
                 
             }
+        }.alert(isPresented: $passwordMatchAlert) {
+            Alert(title: Text("Confirm Password"), message: Text("Passwords do not match!"), dismissButton: .default(Text("OK")))
         }
         .navigationTitle("Sign Up")
     }

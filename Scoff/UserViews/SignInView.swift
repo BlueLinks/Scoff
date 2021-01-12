@@ -10,6 +10,7 @@ import Firebase
 
 struct SignInView : View {
     
+    @Binding var authenticated : Bool
     @State var signInError = false
     
     @State var email: String = ""
@@ -20,13 +21,14 @@ struct SignInView : View {
     let db = Firestore.firestore()
     
     @EnvironmentObject var session: SessionStore
-    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
+    @Binding var showView : Bool
     
     func getUser () {
         session.listen()
         if (session.session != nil) {
             print("Signing in")
-            self.mode.wrappedValue.dismiss()
+            authenticated = true
+            self.showView = false
         }
         
         
@@ -72,6 +74,7 @@ struct SignInView : View {
                     }
                     .padding().background(Color.green)
                 }
+                
                 Button(action: {
                     email = "fancyplace@email.com"
                     password = "password1"
@@ -83,6 +86,18 @@ struct SignInView : View {
                         Spacer()
                     }
                     .padding().background(Color.black)
+                }
+                Button(action: {
+                    email = "test@email.com"
+                    password = "password1"
+                    signIn()
+                }) {
+                    HStack{
+                        Spacer()
+                        Text("Customer dev sign in")
+                        Spacer()
+                    }
+                    .padding().background(Color.yellow)
                 }
             }.alert(isPresented: $signInError) {
                 Alert(title: Text("Error Signing In"), message: Text(self.error!), dismissButton: .default(Text("Got it!")))

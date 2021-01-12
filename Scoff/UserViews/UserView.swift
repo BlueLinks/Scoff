@@ -13,6 +13,8 @@ struct UserView : View {
     
     @State var showSignIn : Bool = true
     @State var signOutWarn = false
+    @State var authenticated = false
+    @State var showingSignInView = false
     
     func getUser () {
         session.listen()
@@ -26,7 +28,7 @@ struct UserView : View {
             VStack{
                 if (showSignIn){
                     VStack{
-                        NavigationLink(destination: SignInView()) {
+                        NavigationLink(destination: SignInView(authenticated: $authenticated, showView: $showingSignInView), isActive : $showingSignInView) {
                             Text("Sign In")
                         }                        .font(.title)
                         .padding()
