@@ -20,6 +20,7 @@
 		931040C425642C1300D8428F /* RestaurantSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931040C325642C1300D8428F /* RestaurantSelectView.swift */; };
 		932BEF6B256C414B006ACD89 /* MenuSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932BEF6A256C414B006ACD89 /* MenuSelectView.swift */; };
 		933E4AD6257E9E6D00353FA6 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933E4AD5257E9E6D00353FA6 /* MenuView.swift */; };
+		9348BDB725AE23DA00D14921 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9348BDB625AE23DA00D14921 /* ImagePicker.swift */; };
 		9355AF3425A3579400E4A44E /* RestaurantDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9355AF3325A3579300E4A44E /* RestaurantDetailsView.swift */; };
 		9355AF3725A35F0800E4A44E /* MenuCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9355AF3625A35F0800E4A44E /* MenuCreationView.swift */; };
 		9355AF3B25A388CE00E4A44E /* MenuEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9355AF3A25A388CE00E4A44E /* MenuEditView.swift */; };
@@ -46,6 +47,7 @@
 		931040C325642C1300D8428F /* RestaurantSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantSelectView.swift; sourceTree = "<group>"; };
 		932BEF6A256C414B006ACD89 /* MenuSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSelectView.swift; sourceTree = "<group>"; };
 		933E4AD5257E9E6D00353FA6 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		9348BDB625AE23DA00D14921 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		9355AF3325A3579300E4A44E /* RestaurantDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantDetailsView.swift; sourceTree = "<group>"; };
 		9355AF3625A35F0800E4A44E /* MenuCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCreationView.swift; sourceTree = "<group>"; };
 		9355AF3A25A388CE00E4A44E /* MenuEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuEditView.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				930EA17425A20B080014A15B /* SignUpView.swift */,
 				930EA18425A234F20014A15B /* UserDetailsView.swift */,
 				9355AF3325A3579300E4A44E /* RestaurantDetailsView.swift */,
+				9348BDB625AE23DA00D14921 /* ImagePicker.swift */,
 			);
 			path = UserViews;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				9355AF3B25A388CE00E4A44E /* MenuEditView.swift in Sources */,
 				930EA18525A234F20014A15B /* UserDetailsView.swift in Sources */,
 				932BEF6B256C414B006ACD89 /* MenuSelectView.swift in Sources */,
+				9348BDB725AE23DA00D14921 /* ImagePicker.swift in Sources */,
 				930EA17525A20B090014A15B /* SignUpView.swift in Sources */,
 				9355AF3725A35F0800E4A44E /* MenuCreationView.swift in Sources */,
 				93F6E50C25A4C652002B7068 /* ItemEditView.swift in Sources */,
