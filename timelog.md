@@ -140,3 +140,9 @@
 ### 5 Jan 2021
 
 -   _5 hours_ Menu creation tools are now working although image uploads still need to be implemented as well as start and end times for menus, restaurant admins can now create menus, add items and add extras to those items.
+
+## Week 17
+
+### 12 Jan 2021
+
+-   _6.5 hours_ Users are now able to change their account details including user name and password for authentication and restaurant admins can now change their restaurants splash image
