@@ -45,6 +45,12 @@ struct OrderView: View {
                                             }
                                         }
                                     }
+                                    if (items.notes != ""){
+                                        HStack{
+                                        Text("Notes:")
+                                            Text("\(items.notes)").foregroundColor(.gray)
+                                        }
+                                    }
                                 }
                             }
                             .onDelete(perform: delete)

@@ -56,7 +56,7 @@ struct addItemToOrderView : View{
     @Binding var showing : Bool
     var itemsRef : CollectionReference
     @State var data : [extraRaw] = []
-    @State var userRequests = ""
+    @State var userNotes = ""
     @State var orderAmount = 1.00
     var extrasPrice : Double {
         var totalExtrasPrice : Double = 0
@@ -126,7 +126,7 @@ struct addItemToOrderView : View{
                     }
                 }
                 Section(header: Text("Any requests for the chef?")){
-                    TextField("e.g. no onions", text: $userRequests)
+                    TextField("e.g. no onions", text: $userNotes)
                 }
                 Section(header: Text("Total price for \(orderAmount, specifier: "%.0f") \(item.name) \(priceheaderText)")){
                     HStack{
@@ -144,7 +144,7 @@ struct addItemToOrderView : View{
                             data[index].extraSelected = false
                         }
                     }
-                    self.settings.items.append(orderItem(item: item, quantity: Int(orderAmount), extras: listOfExtras))
+                    self.settings.items.append(orderItem(item: item, quantity: Int(orderAmount), extras: listOfExtras, notes: userNotes))
                     self.showing = false
                 }) {
                     Section{

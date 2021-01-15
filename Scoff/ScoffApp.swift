@@ -146,12 +146,14 @@ struct orderItem : Identifiable {
     var item : itemRaw
     var extras : [extraRaw] = []
     var price : Double
+    var notes : String
     
-    init(item : itemRaw, quantity : Int, extras : [extraRaw]) {
+    init(item : itemRaw, quantity : Int, extras : [extraRaw], notes : String) {
         self.item = item
         self.quantity = quantity
         self.extras.append(contentsOf: extras)
         self.price = item.price + extras.lazy.map { $0.price}.reduce(0, +)
+        self.notes = notes
     }
 }
 
