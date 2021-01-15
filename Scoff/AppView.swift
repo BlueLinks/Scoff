@@ -29,7 +29,7 @@ struct AppView: View {
                     
                     // View for displaying current order and checkout
                     //ShoppingView(paymentContextDelegate: self.paymentContextDelegate)
-                        OrderView()
+                    OrderView()
                         .tabItem {
                             Image(systemName: "cart")
                             Text("Order")
