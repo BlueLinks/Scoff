@@ -41,6 +41,7 @@ struct MenuSelectView: View {
     
     let db = Firestore.firestore()
     var restaurant: restaurantRaw
+    @EnvironmentObject var order : Order
     
     @State var data : [menuRaw] = []
     @State var firstLoad = true
@@ -97,7 +98,7 @@ struct MenuSelectView: View {
                         getMenus(restaurantID: restaurant.id)
                         self.firstLoad = false
                     }
-                    
+                    self.order.restaurant = restaurant
                 }
                 VStack(spacing: 0){
                     // display each menu

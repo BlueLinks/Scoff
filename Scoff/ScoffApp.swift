@@ -161,7 +161,7 @@ class Order: ObservableObject {
     @Published var id = UUID()
     @Published var orderTime : Date?
     @Published var tableNumber : Int?
-    @Published var restaurant : String?
+    @Published var restaurant : restaurantRaw?
     @Published var items : [orderItem] = []
     var total : Double{
         return items.lazy.map { $0.price * Double($0.quantity) }.reduce(0, +)
@@ -214,9 +214,9 @@ struct ScoffApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
-        var settings = Order()
+        var order = Order()
         WindowGroup {
-            AppView().environmentObject(settings).environmentObject(SessionStore())
+            AppView().environmentObject(order).environmentObject(SessionStore())
         }
     }
 }

@@ -78,7 +78,7 @@ struct addItemToOrderView : View{
         
     }
     
-    @EnvironmentObject var settings: Order
+    @EnvironmentObject var order : Order
     
     
     var body : some View{
@@ -144,7 +144,7 @@ struct addItemToOrderView : View{
                             data[index].extraSelected = false
                         }
                     }
-                    self.settings.items.append(orderItem(item: item, quantity: Int(orderAmount), extras: listOfExtras, notes: userNotes))
+                    self.order.items.append(orderItem(item: item, quantity: Int(orderAmount), extras: listOfExtras, notes: userNotes))
                     self.showing = false
                 }) {
                     Section{

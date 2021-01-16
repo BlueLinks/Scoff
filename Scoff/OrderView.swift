@@ -7,15 +7,22 @@
 
 import SwiftUI
 import Stripe
+import URLImage
 
 struct OrderView: View {
     
     
-    @EnvironmentObject var settings: Order
+    @EnvironmentObject var order : Order
     
     @State private var itemsInCart : Bool = true
     
-    @State private var tableNumber : Int = 0
+    @State private var tableNumberPicker : Int = 0
+    
+    private var tableNumber : Int {
+        return tableNumberPicker + 1
+    }
+    
+    @State private var tableWarn : Bool = false
     
     var body: some View {
         NavigationView{
@@ -23,8 +30,29 @@ struct OrderView: View {
                 if itemsInCart {
                     // if items are in the cart then show the checkout
                     List{
+                        if let restaurant = self.order.restaurant{
+                            Section{
+                                HStack(){
+                                    Text(restaurant.name)
+                                        .font(.title)
+                                Spacer()
+                                    URLImage(url: URL(string: restaurant.picture)!){ image in
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(height: 100)
+                                            .clipped()
+                                            .clipShape(Circle())
+                                            .overlay(Circle().stroke(Color.gray, lineWidth: 2))
+                                            
+                                    }
+                                }
+                                
+                            }
+                        }
+                        
                         Section(header: Text("Cart")){
-                            ForEach(self.settings.items){ items in
+                            ForEach(self.order.items){ items in
                                 // Show items in the order
                                 VStack(alignment: .leading, spacing: 5){
                                     HStack{
@@ -47,7 +75,7 @@ struct OrderView: View {
                                     }
                                     if (items.notes != ""){
                                         HStack{
-                                        Text("Notes:")
+                                            Text("Notes:")
                                             Text("\(items.notes)").foregroundColor(.gray)
                                         }
                                     }
@@ -58,8 +86,8 @@ struct OrderView: View {
                         Section{
                             
                             HStack{
-                                Picker(selection : $tableNumber, label : Text("Please select your table number")){
-                                    ForEach(0 ..< 30){ number in
+                                Picker(selection : $tableNumberPicker, label : Text("Please select your table number")){
+                                    ForEach(1 ..< 30){ number in
                                         Text("Table \(number)")
                                     }
                                 }
@@ -68,12 +96,13 @@ struct OrderView: View {
                                 // Show total price
                                 Text("Total")
                                 Spacer()
-                                Text("£\(self.settings.total, specifier: "%.2f")")
+                                Text("£\(self.order.total, specifier: "%.2f")")
                             }
                             
                             Button(action : {
                                 //Checkout button
                                 print("Checkout button pressed")
+                                tableWarn.toggle()
                             }){
                                 HStack{
                                     Spacer()
@@ -84,6 +113,11 @@ struct OrderView: View {
                                         .foregroundColor(.white)
                                     Spacer()
                                 }
+                            }.alert(isPresented:$tableWarn){
+                                Alert(title: Text("Table Number"), message: Text("Are you sure you're at table \(tableNumber)?"), primaryButton: .destructive(Text("I'm Sure")){
+                                    print("They are sure")
+                                    
+                                }, secondaryButton: .cancel())
                             }
                         }
                     }.listStyle(GroupedListStyle())
@@ -92,7 +126,7 @@ struct OrderView: View {
                     Text("Add some items to your cart!")
                 }
                 
-            }
+            }.padding(.top)
             .navigationBarTitle("Checkout")
             .navigationBarItems(trailing: EditButton())
             
@@ -100,8 +134,8 @@ struct OrderView: View {
         
         .onAppear(){
             // Check the status of the users cart when view appears
-            print("View appeard, items in cart: \(self.settings.items.count)")
-            if self.settings.items.count > 0 {
+            print("View appeard, items in cart: \(self.order.items.count)")
+            if self.order.items.count > 0 {
                 itemsInCart = true
             } else {
                 itemsInCart = false
@@ -112,9 +146,9 @@ struct OrderView: View {
     
     
     func delete(at offsets: IndexSet) {
-        settings.items.remove(atOffsets: offsets)
-        print("Items in cart: \(self.settings.items.count)")
-        if self.settings.items.count == 0 {
+        order.items.remove(atOffsets: offsets)
+        print("Items in cart: \(self.order.items.count)")
+        if self.order.items.count == 0 {
             // If cart is now empty then hide checkout view and show notice
             itemsInCart = false
             print("Cart now empty")

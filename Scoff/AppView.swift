@@ -10,7 +10,7 @@ import SwiftUI
 struct AppView: View {
     private var badgePosition: CGFloat = 2
     private var tabsCount: CGFloat = 3
-    @EnvironmentObject var settings: Order
+    @EnvironmentObject var order : Order
     
     @EnvironmentObject var session: SessionStore
     
@@ -42,13 +42,13 @@ struct AppView: View {
                         }
                 }
                 // Check if order contains any items
-                if (settings.items.count > 0){
+                if (order.items.count > 0){
                     // if so then display red badge on order tab icon with number of items
                     ZStack {
                         Circle()
                             .foregroundColor(.red)
                         
-                        Text("\(settings.items.count)")
+                        Text("\(order.items.count)")
                             .foregroundColor(.white)
                             .font(Font.system(size: 12))
                     }                .frame(width: 15, height: 15)
