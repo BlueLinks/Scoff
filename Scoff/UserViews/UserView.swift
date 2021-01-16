@@ -69,6 +69,10 @@ struct UserView : View {
                                 Image(systemName: "book")
                                 Text("Edit Menus")
                             }
+                            NavigationLink(destination: RestaurantReceiptsView()){
+                                Image(systemName: "book")
+                                Text("Edit Menus")
+                            }
                         }
                         // Show sign out to all signed in users
                         Button(action: {
@@ -78,6 +82,7 @@ struct UserView : View {
                         }.alert(isPresented:$signOutWarn){
                             Alert(title: Text("Sign Out"), message: Text("Are you sure you want to sign out?"), primaryButton: .destructive(Text("Sign Out")){
                                 print("Logged out?" , session.signOut())
+                                session.session = nil
                                 showSignIn = true
 
                             }, secondaryButton: .cancel())

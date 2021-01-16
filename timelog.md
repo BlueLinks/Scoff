@@ -135,6 +135,7 @@
 ### 4 Jan 2021
 
 -   _5 hours_ Created views for users and restaurant admins to view their account details and in the case of restaurant admins their restaurants details, these will later be updated to allow for changes to be made and saved.
+
 -   _3 hours_ Began implementation of menu creation tools for restaurant admins, the original plan was for the restaurant tab to be replaced with this when signed into a restaurant admin account however it proved difficult to change a view when the view is not active so a button was created in the UserView to allow for the menu creation views to be accessed.
 
 ### 5 Jan 2021
@@ -145,4 +146,18 @@
 
 ### 12 Jan 2021
 
--   _6.5 hours_ Users are now able to change their account details including user name and password for authentication and restaurant admins can now change their restaurants splash image
+-   _6.5 hours_ Users are now able to change their account details including user name and password for authentication and restaurant admins can now change their restaurants splash image.
+
+### 13 Jan 2021
+
+-   _6.5 hours_ Tried again to implement payment processing, attempted switching to keroku for stripe backend.
+
+### 15 Jan 2021
+
+-   _6 hours_ Kept trying to implement payment processing, attempted using locally hosted backend and new talk script firebase clound functions but to no avail
+
+-   _1 hour_ Cleaned up user interface of OrderView and now chef requests appear in the OrderView.
+
+### 16 Jan 2021
+
+-   _2 hours_ Users can now place orders, orders are uploaded to both the restaurants order collection and if the user is signed in, their orders collection.

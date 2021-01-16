@@ -24,6 +24,7 @@
 		9355AF3425A3579400E4A44E /* RestaurantDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9355AF3325A3579300E4A44E /* RestaurantDetailsView.swift */; };
 		9355AF3725A35F0800E4A44E /* MenuCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9355AF3625A35F0800E4A44E /* MenuCreationView.swift */; };
 		9355AF3B25A388CE00E4A44E /* MenuEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9355AF3A25A388CE00E4A44E /* MenuEditView.swift */; };
+		9372DC6725B31D360011206B /* RestaurantReceiptsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9372DC6625B31D360011206B /* RestaurantReceiptsView.swift */; };
 		93881130258D0FAC0037ABF9 /* OrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9388112F258D0FAC0037ABF9 /* OrderView.swift */; };
 		9393D5E8255C3938007E36B1 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393D5E7255C3938007E36B1 /* AppView.swift */; };
 		9393D5EF255C3A3F007E36B1 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393D5EE255C3A3F007E36B1 /* UserView.swift */; };
@@ -51,6 +52,7 @@
 		9355AF3325A3579300E4A44E /* RestaurantDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantDetailsView.swift; sourceTree = "<group>"; };
 		9355AF3625A35F0800E4A44E /* MenuCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCreationView.swift; sourceTree = "<group>"; };
 		9355AF3A25A388CE00E4A44E /* MenuEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuEditView.swift; sourceTree = "<group>"; };
+		9372DC6625B31D360011206B /* RestaurantReceiptsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantReceiptsView.swift; sourceTree = "<group>"; };
 		9388112F258D0FAC0037ABF9 /* OrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderView.swift; sourceTree = "<group>"; };
 		9393D5E7255C3938007E36B1 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		9393D5EE255C3A3F007E36B1 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
@@ -123,8 +125,8 @@
 				930EA17125A1F1B30014A15B /* SignInView.swift */,
 				930EA17425A20B080014A15B /* SignUpView.swift */,
 				930EA18425A234F20014A15B /* UserDetailsView.swift */,
-				9355AF3325A3579300E4A44E /* RestaurantDetailsView.swift */,
 				9348BDB625AE23DA00D14921 /* ImagePicker.swift */,
+				9355AF3325A3579300E4A44E /* RestaurantDetailsView.swift */,
 			);
 			path = UserViews;
 			sourceTree = "<group>";
@@ -136,6 +138,7 @@
 				931040C325642C1300D8428F /* RestaurantSelectView.swift */,
 				932BEF6A256C414B006ACD89 /* MenuSelectView.swift */,
 				933E4AD5257E9E6D00353FA6 /* MenuView.swift */,
+				9372DC6625B31D360011206B /* RestaurantReceiptsView.swift */,
 			);
 			path = RestrauntViews;
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 				933E4AD6257E9E6D00353FA6 /* MenuView.swift in Sources */,
 				930EA18825A235070014A15B /* ReceiptsView.swift in Sources */,
 				93030877255C264000A619B0 /* RestaurantView.swift in Sources */,
+				9372DC6725B31D360011206B /* RestaurantReceiptsView.swift in Sources */,
 				9393D5EF255C3A3F007E36B1 /* UserView.swift in Sources */,
 				93030875255C264000A619B0 /* ScoffApp.swift in Sources */,
 				93F6E51325A4DAD9002B7068 /* ExtraEditView.swift in Sources */,

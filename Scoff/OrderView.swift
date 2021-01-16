@@ -8,11 +8,13 @@
 import SwiftUI
 import Stripe
 import URLImage
+import Firebase
 
 struct OrderView: View {
     
     
     @EnvironmentObject var order : Order
+    @EnvironmentObject var session: SessionStore
     
     @State private var itemsInCart : Bool = true
     
@@ -23,6 +25,7 @@ struct OrderView: View {
     }
     
     @State private var tableWarn : Bool = false
+    @State var orderWarn : Bool = false
     
     var body: some View {
         NavigationView{
@@ -44,7 +47,6 @@ struct OrderView: View {
                                             .clipped()
                                             .clipShape(Circle())
                                             .overlay(Circle().stroke(Color.gray, lineWidth: 2))
-                                            
                                     }
                                 }
                                 
@@ -91,6 +93,13 @@ struct OrderView: View {
                                         Text("Table \(number)")
                                     }
                                 }
+                            }.alert(isPresented:$tableWarn){
+                                Alert(title: Text("Table Number"), message: Text("Are you sure you're at table \(tableNumber)?"), primaryButton: .destructive(Text("I'm Sure")){
+                                    print("They are sure")
+                                    order.orderTime = Date()
+                                    placeOrder()
+                                    
+                                }, secondaryButton: .cancel())
                             }
                             HStack{
                                 // Show total price
@@ -113,12 +122,11 @@ struct OrderView: View {
                                         .foregroundColor(.white)
                                     Spacer()
                                 }
-                            }.alert(isPresented:$tableWarn){
-                                Alert(title: Text("Table Number"), message: Text("Are you sure you're at table \(tableNumber)?"), primaryButton: .destructive(Text("I'm Sure")){
-                                    print("They are sure")
-                                    
-                                }, secondaryButton: .cancel())
                             }
+                            .alert(isPresented:$orderWarn){
+                                Alert(title: Text("Order Status"), message: Text("Order placed!"), dismissButton: .default(Text("OK")))
+                            }
+                            
                         }
                     }.listStyle(GroupedListStyle())
                 } else {
@@ -152,6 +160,51 @@ struct OrderView: View {
             // If cart is now empty then hide checkout view and show notice
             itemsInCart = false
             print("Cart now empty")
+        }
+    }
+    
+    func placeOrder(){
+        let db = Firestore.firestore()
+        uploadOrder(dbRef: db.collection("restaurants").document(self.order.restaurant!.id).collection("orders"))
+        if session.session != nil {
+            print("User is logged in")
+            uploadOrder(dbRef: db.collection("users").document(session.session!.uid).collection("orders"))
+        }
+        self.orderWarn.toggle()
+    }
+    
+    func uploadOrder(dbRef: CollectionReference){
+        
+        var orderRef: DocumentReference? = nil
+        var itemRef: DocumentReference? = nil
+        
+        orderRef = dbRef.addDocument(data: [
+            "restaurantName" : order.restaurant!.name as String,
+            "dateTime" : order.orderTime! as Date,
+            "tableNumber" : tableNumber as Int,
+        ]) {
+            err in
+            if let err = err {
+                print("Error adding order: \(err)")
+            } else {
+                print("Order added with ID: \(orderRef!.documentID)")
+                for item in self.order.items{
+                    itemRef = dbRef.document(orderRef!.documentID).collection("items").addDocument(data :[
+                        "name" : item.item.name,
+                        "quantity" : item.quantity,
+                        "notes" : item.notes,
+                        "extras" : item.extras.map{$0.name}
+                    ]) {
+                        err in
+                        if let err = err {
+                            print("Error adding item: \(err)")
+                        } else {
+                            print("Item added with ID: \(itemRef!.documentID)")
+                        }
+                    }
+                }
+                
+            }
         }
     }
     
