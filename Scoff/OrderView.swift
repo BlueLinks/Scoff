@@ -177,6 +177,7 @@ struct OrderView: View {
         
         var orderRef: DocumentReference? = nil
         var itemRef: DocumentReference? = nil
+        var extraRef : DocumentReference? = nil
         
         orderRef = dbRef.addDocument(data: [
             "restaurantName" : order.restaurant!.name as String,
@@ -192,14 +193,28 @@ struct OrderView: View {
                     itemRef = dbRef.document(orderRef!.documentID).collection("items").addDocument(data :[
                         "name" : item.item.name,
                         "quantity" : item.quantity,
+                        "price" : item.item.price,
                         "notes" : item.notes,
-                        "extras" : item.extras.map{$0.name}
+//                        "extras" : item.extras.map{$0.name}
                     ]) {
                         err in
                         if let err = err {
                             print("Error adding item: \(err)")
                         } else {
                             print("Item added with ID: \(itemRef!.documentID)")
+                            for extra in item.extras{
+                                extraRef = dbRef.document(orderRef!.documentID).collection("items").document(itemRef!.documentID).collection("extras").addDocument(data :[
+                                    "name" : extra.name,
+                                    "price" : extra.price
+                                ]) {
+                                    err in
+                                    if let err = err {
+                                        print("Error adding extra: \(err)")
+                                    } else {
+                                        print("Extra added with ID: \(extraRef!.documentID)")
+                                    }
+                                }
+                            }
                         }
                     }
                 }
