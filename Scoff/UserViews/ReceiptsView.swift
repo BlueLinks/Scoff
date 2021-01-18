@@ -55,17 +55,22 @@ class ReceiptViewModel : ObservableObject {
     @EnvironmentObject var session: SessionStore
     private var db = Firestore.firestore()
     
+    private var lastReceipt : DocumentSnapshot? = nil
+    
     
     func getPastOrders(user : User){
         
         // Create dispatch group for each receipt
         let orderGroup = DispatchGroup()
         
-        // Check if user is signed in
+        var orderRef = db.collection("users").document(user.uid).collection("orders").order(by: "dateTime")
         
+        if let lastSnap = lastReceipt {
+            orderRef = orderRef.start(afterDocument: lastSnap)
             
+        }
             // get receipts
-            db.collection("users").document(user.uid).collection("orders").getDocuments() { (receiptList, err) in
+            orderRef.limit(to: 10).getDocuments() { (receiptList, err) in
                 
                 if err != nil{
                     // Error in receiving receipts
@@ -134,6 +139,9 @@ class ReceiptViewModel : ObservableObject {
                             }
                             
                         }
+                        
+                       
+                        
                         itemGroup.notify(queue: DispatchQueue.global(qos: .background)) {
                             // called when item has been loaded
                             print("--- Leaving order Group for \(receiptID)")
@@ -154,6 +162,15 @@ class ReceiptViewModel : ObservableObject {
                     }
                     
                 }
+                
+                guard let lastSnapshot = receiptList?.documents.last else {
+                    // The collection is empty
+                    return
+                }
+                
+                self.lastReceipt = lastSnapshot
+                
+                
             }
         
     }
@@ -205,6 +222,13 @@ struct ReceiptsView: View {
                         }
                     }
                 }
+            }
+            Button(action : {
+                if let user = session.session{
+                    self.receiptViewModel.getPastOrders(user : user)
+                }
+            }){
+                Text("Get more")
             }
         }.listStyle(GroupedListStyle())
         .navigationBarTitle("Receipts")
