@@ -9,25 +9,31 @@ import SwiftUI
 import Firebase
 
 struct receiptExtra : Identifiable {
-    var id = UUID()
+    var id : String
     var name : String
     var price : Double
     
-    init(name : String, price : Double){
+    init(id: String, name : String, price : Double){
+        self.id = id
         self.name = name
         self.price = price
     }
 }
 
 struct receiptItem : Identifiable {
-    var id = UUID()
+    var id : String
     var name: String
+    var quantity : Int
+    var notes : String
     var price : Double
     var totalPrice : Double
     var extras : [receiptExtra]
     
-    init(name : String, price : Double, extras : [receiptExtra]){
+    init(id: String, name : String, quantity : Int, notes : String, price : Double, extras : [receiptExtra]){
+        self.id = id
         self.name = name
+        self.quantity = quantity
+        self.notes = notes
         self.price = price
         self.extras = extras
         self.totalPrice = price + extras.lazy.map { $0.price}.reduce(0, +)
@@ -37,14 +43,15 @@ struct receiptItem : Identifiable {
 
 
 struct receipt : Identifiable {
-    var id = UUID()
+    var id : String = ""
     var restaurantName : String = ""
     var tableNumber : Int = 0
     var dateTime : Date = Date()
     var items : [receiptItem]
     var bill : Double
     
-    init(restaurantName : String, tableNumber : Int, dateTime : Date, items : [receiptItem]){
+    init(id : String, restaurantName : String, tableNumber : Int, dateTime : Date, items : [receiptItem]){
+        self.id = id
         self.restaurantName = restaurantName
         self.tableNumber = tableNumber
         self.dateTime = dateTime
@@ -121,8 +128,9 @@ class ReceiptViewModel : ObservableObject {
                             }
                             
                             for extraToBeAdded in extraList!.documents{
+                                let extraID = extraToBeAdded.documentID
                                 // create new extra
-                                let newExtra = receiptExtra(name: extraToBeAdded.get("name") as! String, price: extraToBeAdded.get("price") as! Double)
+                                let newExtra = receiptExtra(id: extraID ,name: extraToBeAdded.get("name") as! String, price: extraToBeAdded.get("price") as! Double)
                                 print("Adding new extra : \(newExtra.name)")
                                 // append to list of extras for item
                                 listOfExtras.append(newExtra)
@@ -134,7 +142,7 @@ class ReceiptViewModel : ObservableObject {
                             // called when all extras are loaded for item
                             print("Extras loaded, creating newItem")
                             // create item with extras
-                            let newItem = receiptItem(name: itemToBeAdded.get("name") as! String, price: itemToBeAdded.get("price") as! Double, extras: listOfExtras)
+                            let newItem = receiptItem(id : itemID ,name: itemToBeAdded.get("name") as! String, quantity: itemToBeAdded.get("quantity") as! Int, notes: itemToBeAdded.get("notes") as! String, price: itemToBeAdded.get("price") as! Double, extras: listOfExtras)
                             print("Adding new item : \(newItem.name)")
                             listOfItems.append(newItem)
                             print("--- Levaing item group for \(itemID)")
@@ -155,7 +163,7 @@ class ReceiptViewModel : ObservableObject {
                         // called when all items in a receipt have been loaded
                         print("Items loaded, creating newReceipt")
                         // create new receipt
-                        let newReceipt = receipt(restaurantName: receiptToBeAdded["restaurantName"] as! String, tableNumber: receiptToBeAdded["tableNumber"] as! Int, dateTime: (receiptToBeAdded["dateTime"] as! Timestamp).dateValue(), items: listOfItems)
+                        let newReceipt = receipt(id: receiptID, restaurantName: receiptToBeAdded["restaurantName"] as! String, tableNumber: receiptToBeAdded["tableNumber"] as! Int, dateTime: (receiptToBeAdded["dateTime"] as! Timestamp).dateValue(), items: listOfItems)
                         print("Adding new receipt from \(newReceipt.restaurantName)")
                         // append receipt to self.receipts in order to create views
                         DispatchQueue.main.async {
