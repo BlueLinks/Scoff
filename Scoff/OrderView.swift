@@ -54,17 +54,17 @@ struct OrderView: View {
                         }
                         
                         Section(header: Text("Cart")){
-                            ForEach(self.order.items){ items in
+                            ForEach(self.order.items){ item in
                                 // Show items in the order
                                 VStack(alignment: .leading, spacing: 5){
                                     HStack{
-                                        Text("\(items.quantity) * \(items.item.name)")
+                                        Text("\(item.quantity) * \(item.item.name)")
                                         Spacer()
-                                        Text("£\(items.item.price, specifier: "%.2f")")
+                                        Text("£\(item.item.price, specifier: "%.2f")")
                                     }
-                                    if (items.extras.count > 0){
+                                    if (item.extras.count > 0){
                                         // Show the extras that have been added to item
-                                        ForEach(items.extras){extra in
+                                        ForEach(item.extras){extra in
                                             HStack{
                                                 Spacer()
                                                 Text("\(extra.name)")
@@ -75,10 +75,10 @@ struct OrderView: View {
                                             }
                                         }
                                     }
-                                    if (items.notes != ""){
+                                    if (item.notes != ""){
                                         HStack{
                                             Text("Notes:")
-                                            Text("\(items.notes)").foregroundColor(.gray)
+                                            Text("\(item.notes)").foregroundColor(.gray)
                                         }
                                     }
                                 }
@@ -176,8 +176,6 @@ struct OrderView: View {
     func uploadOrder(dbRef: CollectionReference){
         
         var orderRef: DocumentReference? = nil
-        var itemRef: DocumentReference? = nil
-        var extraRef : DocumentReference? = nil
         
         orderRef = dbRef.addDocument(data: [
             "restaurantName" : order.restaurant!.name as String,
@@ -190,19 +188,20 @@ struct OrderView: View {
             } else {
                 print("Order added with ID: \(orderRef!.documentID)")
                 for item in self.order.items{
+                    var itemRef : DocumentReference? = nil
                     itemRef = dbRef.document(orderRef!.documentID).collection("items").addDocument(data :[
                         "name" : item.item.name,
                         "quantity" : item.quantity,
                         "price" : item.item.price,
                         "notes" : item.notes,
 //                        "extras" : item.extras.map{$0.name}
-                    ]) {
-                        err in
+                    ]) { err in
                         if let err = err {
                             print("Error adding item: \(err)")
                         } else {
                             print("Item added with ID: \(itemRef!.documentID)")
                             for extra in item.extras{
+                                var extraRef : DocumentReference? = nil
                                 extraRef = dbRef.document(orderRef!.documentID).collection("items").document(itemRef!.documentID).collection("extras").addDocument(data :[
                                     "name" : extra.name,
                                     "price" : extra.price
