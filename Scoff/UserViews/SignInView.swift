@@ -76,7 +76,7 @@ struct SignInView : View {
                 }
                 
                 Button(action: {
-                    email = "fancyplace@email.com"
+                    email = "testaurant@email.com"
                     password = "password1"
                     signIn()
                 }) {
