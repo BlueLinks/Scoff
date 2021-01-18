@@ -69,9 +69,9 @@ struct UserView : View {
                                 Image(systemName: "book")
                                 Text("Edit Menus")
                             }
-                            NavigationLink(destination: RestaurantReceiptsView()){
-                                Image(systemName: "book")
-                                Text("Edit Menus")
+                            NavigationLink(destination: IncomingOrdersView()){
+                                Image(systemName: "tray.and.arrow.down")
+                                Text("Incoming Orders")
                             }
                         }
                         // Show sign out to all signed in users

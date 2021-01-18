@@ -24,7 +24,7 @@
 		9355AF3425A3579400E4A44E /* RestaurantDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9355AF3325A3579300E4A44E /* RestaurantDetailsView.swift */; };
 		9355AF3725A35F0800E4A44E /* MenuCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9355AF3625A35F0800E4A44E /* MenuCreationView.swift */; };
 		9355AF3B25A388CE00E4A44E /* MenuEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9355AF3A25A388CE00E4A44E /* MenuEditView.swift */; };
-		9372DC6725B31D360011206B /* RestaurantReceiptsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9372DC6625B31D360011206B /* RestaurantReceiptsView.swift */; };
+		936A2C9E25B5D547006409D0 /* IncomingOrdersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936A2C9D25B5D547006409D0 /* IncomingOrdersView.swift */; };
 		93881130258D0FAC0037ABF9 /* OrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9388112F258D0FAC0037ABF9 /* OrderView.swift */; };
 		9393D5E8255C3938007E36B1 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393D5E7255C3938007E36B1 /* AppView.swift */; };
 		9393D5EF255C3A3F007E36B1 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393D5EE255C3A3F007E36B1 /* UserView.swift */; };
@@ -52,7 +52,7 @@
 		9355AF3325A3579300E4A44E /* RestaurantDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantDetailsView.swift; sourceTree = "<group>"; };
 		9355AF3625A35F0800E4A44E /* MenuCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCreationView.swift; sourceTree = "<group>"; };
 		9355AF3A25A388CE00E4A44E /* MenuEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuEditView.swift; sourceTree = "<group>"; };
-		9372DC6625B31D360011206B /* RestaurantReceiptsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantReceiptsView.swift; sourceTree = "<group>"; };
+		936A2C9D25B5D547006409D0 /* IncomingOrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingOrdersView.swift; sourceTree = "<group>"; };
 		9388112F258D0FAC0037ABF9 /* OrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderView.swift; sourceTree = "<group>"; };
 		9393D5E7255C3938007E36B1 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		9393D5EE255C3A3F007E36B1 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
@@ -99,7 +99,7 @@
 				9393D5E7255C3938007E36B1 /* AppView.swift */,
 				930EA17825A20B400014A15B /* UserViews */,
 				930EA17A25A20B610014A15B /* RestrauntViews */,
-				93F6E50E25A4D207002B7068 /* MenuCreationViews */,
+				93F6E50E25A4D207002B7068 /* RestaurantAdminViews */,
 				9388112F258D0FAC0037ABF9 /* OrderView.swift */,
 				9303087A255C264300A619B0 /* Preview Content */,
 				93030878255C264300A619B0 /* Assets.xcassets */,
@@ -138,20 +138,20 @@
 				931040C325642C1300D8428F /* RestaurantSelectView.swift */,
 				932BEF6A256C414B006ACD89 /* MenuSelectView.swift */,
 				933E4AD5257E9E6D00353FA6 /* MenuView.swift */,
-				9372DC6625B31D360011206B /* RestaurantReceiptsView.swift */,
 			);
 			path = RestrauntViews;
 			sourceTree = "<group>";
 		};
-		93F6E50E25A4D207002B7068 /* MenuCreationViews */ = {
+		93F6E50E25A4D207002B7068 /* RestaurantAdminViews */ = {
 			isa = PBXGroup;
 			children = (
 				9355AF3625A35F0800E4A44E /* MenuCreationView.swift */,
 				9355AF3A25A388CE00E4A44E /* MenuEditView.swift */,
 				93F6E50B25A4C652002B7068 /* ItemEditView.swift */,
 				93F6E51225A4DAD9002B7068 /* ExtraEditView.swift */,
+				936A2C9D25B5D547006409D0 /* IncomingOrdersView.swift */,
 			);
-			path = MenuCreationViews;
+			path = RestaurantAdminViews;
 			sourceTree = "<group>";
 		};
 		AAF344ACAD20113F4CC4E83E /* Pods */ = {
@@ -297,9 +297,9 @@
 				9355AF3725A35F0800E4A44E /* MenuCreationView.swift in Sources */,
 				93F6E50C25A4C652002B7068 /* ItemEditView.swift in Sources */,
 				933E4AD6257E9E6D00353FA6 /* MenuView.swift in Sources */,
+				936A2C9E25B5D547006409D0 /* IncomingOrdersView.swift in Sources */,
 				930EA18825A235070014A15B /* ReceiptsView.swift in Sources */,
 				93030877255C264000A619B0 /* RestaurantView.swift in Sources */,
-				9372DC6725B31D360011206B /* RestaurantReceiptsView.swift in Sources */,
 				9393D5EF255C3A3F007E36B1 /* UserView.swift in Sources */,
 				93030875255C264000A619B0 /* ScoffApp.swift in Sources */,
 				93F6E51325A4DAD9002B7068 /* ExtraEditView.swift in Sources */,
