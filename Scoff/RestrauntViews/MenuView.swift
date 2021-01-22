@@ -27,10 +27,12 @@ struct itemCardView : View {
                 VStack(alignment: .leading){
                     Text(item.name)
                         .font(.title)
-                    
                     Text("£\(item.price, specifier: "%.2f")")
                         .font(.body)
-                }.padding(.leading, 10)
+                    Spacer()
+                    // Show dietary symbols
+                    dietaryItemSymbolsView(item : item)
+                }.padding(10)
                 Spacer()
                 
                 URLImage(url: URL(string: item.image)!){ image in
@@ -104,25 +106,35 @@ struct addItemToOrderView : View{
                     .frame(width: UIScreen.main.bounds.size.width, height: 250, alignment : .center)
                     .clipped()
             }
-            Text("\(item.name)")
-                .font(.title)
+            HStack{
+                // Show item name and dietary symbols
+                Text("\(item.name)")
+                    .font(.title)
+                Spacer()
+                dietaryItemSymbolsView(item: item)
+            }.padding(.leading, 10)
+            .padding(.trailing, 10)
             Form{
                 // Check if item has extras
                 if !self.data.isEmpty {
                     Section(header: Text("Any Extras?")){
-                        ScrollView(.vertical){
+                        
                             // Display Extras
                             ForEach(data.indices) { index in
                                 Toggle(isOn: self.$data[index].extraSelected) {
-                                    VStack(alignment: .leading){
-                                        Text("\(self.data[index].name)")
-                                        Text("£\(self.data[index].price, specifier: "%.2f")")
+                                    HStack{
+                                        // Show extra name and price
+                                        VStack(alignment: .leading){
+                                            Text("\(self.data[index].name)")
+                                            Text("£\(self.data[index].price, specifier: "%.2f")")
+                                        }
+                                        // show extra dietary symbols
+                                        dietaryExtraSymbolsView(extra: self.data[index])
                                     }
                                     
                                 }
-                            }.padding(.trailing)
-                            .padding(.leading)
-                        }
+                            }
+                        
                     }
                 }
                 Section(header: Text("Any requests for the chef?")){
@@ -183,7 +195,7 @@ struct addItemToOrderView : View{
             for newExtra in extraList!.documents{
                 
                 // construct new extra
-                let extra = extraRaw(id: newExtra.documentID, name: newExtra.get("name") as! String, price: newExtra.get("price") as! Double, extraSelected: false)
+                let extra = extraRaw(id: newExtra.documentID, name: newExtra.get("name") as! String, price: newExtra.get("price") as! Double, extraSelected: false, vegetarian: newExtra.get("vegetarian") as! Bool, vegan: newExtra.get("vegan") as! Bool, gluten: newExtra.get("gluten") as! Bool)
                 
                 // append new extra to list of extras
                 self.data.append(extra)
@@ -211,7 +223,7 @@ struct MenuView: View {
             VStack(spacing: 0){
                 ForEach(self.data){ item in
                     Divider()
-                    itemCardView(item : item, itemsRef: itemsRef)
+                    itemCardView(item : item, itemsRef: itemsRef).frame(minHeight: 150,maxHeight: .infinity)
                     // display each item from menu
                 }
                 Divider()
