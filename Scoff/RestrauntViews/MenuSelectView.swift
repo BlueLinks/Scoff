@@ -46,6 +46,11 @@ struct MenuSelectView: View {
     @State var data : [menuRaw] = []
     @State var firstLoad = true
     
+    @State var trackWarn = true
+    @Environment(\.openURL) var openURL
+    @State var showSafariView = false
+    @State var url : String = ""
+    
     var body: some View {
         ZStack{
             
@@ -92,6 +97,17 @@ struct MenuSelectView: View {
                         .padding(.bottom, 5)
                     }
                 }.background(Color.black)
+                .alert(isPresented:$trackWarn){
+                    Alert(title: Text("Check in Scotland"), message: Text("One member of your party must complete a Check in Scotland Form"), primaryButton: .destructive(Text("I will")){
+                        print("Open link")
+                        self.url = "https://scoff-a30ae.web.app/?name=" + restaurant.name
+                        self.showSafariView.toggle()
+                    }, secondaryButton: .cancel(Text("Someone else will")))
+                }
+                .fullScreenCover(isPresented: $showSafariView) {
+                    SafariView(url: URL(string: url)!).edgesIgnoringSafeArea(.all)
+                }
+                
                 .onAppear(){
                     // load new menus
                     if firstLoad{
@@ -130,7 +146,7 @@ struct MenuSelectView: View {
                 
                 // construct new menu
                 let menu = menuRaw(id: newMenu.documentID, name: newMenu.get("name") as! String)
-
+                
                 // append new menu to list of menus
                 self.data.append(menu)
                 
