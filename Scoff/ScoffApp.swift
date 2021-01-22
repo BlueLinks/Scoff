@@ -41,7 +41,10 @@ class SessionStore : ObservableObject {
                             lastName : document.get("lastName") as? String,
                             dateOfBirth : date,
                             email: user.email,
-                            restaurantID: document.get("restaurantID") as? String
+                            restaurantID: document.get("restaurantID") as? String,
+                            coeliac: document.get("coeliac") as? Bool,
+                            vegetarian: document.get("vegetarian") as? Bool,
+                            vegan: document.get("vegan") as? Bool
                         )
                     }
                 }
@@ -93,14 +96,20 @@ class User {
     var dateOfBirth : Date?
     var email: String?
     var restaurantID: String?
+    var coeliac : Bool?
+    var vegetarian : Bool?
+    var vegan : Bool?
     
-    init(uid: String, firstName: String?,lastName: String?, dateOfBirth: Date?, email: String?, restaurantID: String?) {
+    init(uid: String, firstName: String?,lastName: String?, dateOfBirth: Date?, email: String?, restaurantID: String?, coeliac: Bool?, vegetarian: Bool?, vegan : Bool?) {
         self.uid = uid
         self.firstName = firstName
         self.lastName = lastName
         self.dateOfBirth = dateOfBirth
         self.email = email
         self.restaurantID = restaurantID
+        self.coeliac = coeliac
+        self.vegetarian = vegetarian
+        self.vegan = vegan
     }
     
 }
