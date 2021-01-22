@@ -57,7 +57,7 @@ struct AppView: View {
                 }
                 
             }
-        }
+        }.onAppear(perform: self.session.listen)
     }
     
 }

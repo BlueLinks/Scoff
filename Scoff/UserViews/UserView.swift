@@ -7,9 +7,15 @@
 
 import SwiftUI
 
+//class isSignedIn : ObservableObject {
+//    @Published var value = false
+//}
+
 struct UserView : View {
     
     @EnvironmentObject var session: SessionStore
+    
+    
     
     @State var showSignIn : Bool = true
     @State var signOutWarn = false
@@ -17,7 +23,6 @@ struct UserView : View {
     @State var showingSignInView = false
     
     func getUser () {
-        session.listen()
         if (session.session != nil) {
             showSignIn = false
         }
@@ -44,7 +49,7 @@ struct UserView : View {
                         .foregroundColor(.white)
                     }
                 } else {
-                    List{
+                    Form{
                         // Check if user is restaurant admin
                         if (session.session?.restaurantID == nil){
                             // User is normal customer

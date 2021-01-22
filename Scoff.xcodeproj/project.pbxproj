@@ -26,6 +26,7 @@
 		9355AF3B25A388CE00E4A44E /* MenuEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9355AF3A25A388CE00E4A44E /* MenuEditView.swift */; };
 		936A2C9E25B5D547006409D0 /* IncomingOrdersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936A2C9D25B5D547006409D0 /* IncomingOrdersView.swift */; };
 		936F654325BB15C300922F8E /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936F654225BB15C300922F8E /* SafariView.swift */; };
+		936F654825BB385B00922F8E /* DietarySymbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936F654725BB385B00922F8E /* DietarySymbols.swift */; };
 		93881130258D0FAC0037ABF9 /* OrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9388112F258D0FAC0037ABF9 /* OrderView.swift */; };
 		9393D5E8255C3938007E36B1 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393D5E7255C3938007E36B1 /* AppView.swift */; };
 		9393D5EF255C3A3F007E36B1 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393D5EE255C3A3F007E36B1 /* UserView.swift */; };
@@ -55,6 +56,7 @@
 		9355AF3A25A388CE00E4A44E /* MenuEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuEditView.swift; sourceTree = "<group>"; };
 		936A2C9D25B5D547006409D0 /* IncomingOrdersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingOrdersView.swift; sourceTree = "<group>"; };
 		936F654225BB15C300922F8E /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
+		936F654725BB385B00922F8E /* DietarySymbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietarySymbols.swift; sourceTree = "<group>"; };
 		9388112F258D0FAC0037ABF9 /* OrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderView.swift; sourceTree = "<group>"; };
 		9393D5E7255C3938007E36B1 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		9393D5EE255C3A3F007E36B1 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				932BEF6A256C414B006ACD89 /* MenuSelectView.swift */,
 				936F654225BB15C300922F8E /* SafariView.swift */,
 				933E4AD5257E9E6D00353FA6 /* MenuView.swift */,
+				936F654725BB385B00922F8E /* DietarySymbols.swift */,
 			);
 			path = RestrauntViews;
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 				9355AF3425A3579400E4A44E /* RestaurantDetailsView.swift in Sources */,
 				930EA17225A1F1B30014A15B /* SignInView.swift in Sources */,
 				931040C425642C1300D8428F /* RestaurantSelectView.swift in Sources */,
+				936F654825BB385B00922F8E /* DietarySymbols.swift in Sources */,
 				93881130258D0FAC0037ABF9 /* OrderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
