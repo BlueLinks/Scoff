@@ -119,21 +119,21 @@ struct addItemToOrderView : View{
                 if !self.data.isEmpty {
                     Section(header: Text("Any Extras?")){
                         
-                            // Display Extras
-                            ForEach(data.indices) { index in
-                                Toggle(isOn: self.$data[index].extraSelected) {
-                                    HStack{
-                                        // Show extra name and price
-                                        VStack(alignment: .leading){
-                                            Text("\(self.data[index].name)")
-                                            Text("£\(self.data[index].price, specifier: "%.2f")")
-                                        }
-                                        // show extra dietary symbols
-                                        dietaryExtraSymbolsView(extra: self.data[index])
+                        // Display Extras
+                        ForEach(data.indices) { index in
+                            Toggle(isOn: self.$data[index].extraSelected) {
+                                HStack{
+                                    // Show extra name and price
+                                    VStack(alignment: .leading){
+                                        Text("\(self.data[index].name)")
+                                        Text("£\(self.data[index].price, specifier: "%.2f")")
                                     }
-                                    
+                                    // show extra dietary symbols
+                                    dietaryExtraSymbolsView(extra: self.data[index])
                                 }
+                                
                             }
+                        }
                         
                     }
                 }
@@ -206,41 +206,34 @@ struct addItemToOrderView : View{
     
 }
 
-struct MenuView: View {
+
+class itemContainer : ObservableObject {
     
-    var menu : menuRaw
-    var restaurantID : String
+    @Published var vegetarianSelected = false
+    @Published var veganSelected = false
+    @Published var glutenFreeSelected = false
+    @Published var userDietSelected = false
     
     let db = Firestore.firestore()
-    @State var data : [itemRaw] = []
-    @State var firstLoad = true
+    @Published var data : [itemRaw] = []
     
-    var body: some View {
-        // Create reference to item in firestore
-        let itemsRef = db.collection("restaurants").document(restaurantID).collection("menus").document(menu.id).collection("items")
-        
-        ScrollView(.vertical){
-            VStack(spacing: 0){
-                ForEach(self.data){ item in
-                    Divider()
-                    itemCardView(item : item, itemsRef: itemsRef).frame(minHeight: 150,maxHeight: .infinity)
-                    // display each item from menu
-                }
-                Divider()
-                Spacer()
-            }
-        }.padding(.top)
-        .onAppear(){
-            if firstLoad {
-                self.getItems(dbRef: itemsRef)
-                self.firstLoad = false
-            }
-        }.navigationTitle("\(menu.name)")
+    var filteredData : [itemRaw] {
+        var unfilteredData = self.data
+        if vegetarianSelected {
+            unfilteredData = unfilteredData.filter{$0.vegetarian}
+        }
+        if veganSelected {
+            unfilteredData = unfilteredData.filter{$0.vegan}
+        }
+        if glutenFreeSelected {
+            unfilteredData = unfilteredData.filter{$0.gluten}
+        }
+        return unfilteredData
     }
     
-    
-    func getItems(dbRef : CollectionReference) {
+    func getData(restaurantID : String, menu : menuRaw){
         // get item documents
+        self.data = []
         db.collection("restaurants").document(restaurantID).collection("menus").document(menu.id).collection("items").getDocuments() { (itemList, err) in
             
             
@@ -261,6 +254,83 @@ struct MenuView: View {
             }
         }
     }
+}
+
+struct MenuView: View {
+    
+    var menu : menuRaw
+    var restaurantID : String
+    
+    let db = Firestore.firestore()
+    @State var firstLoad = true
+    @ObservedObject var data = itemContainer()
+    @EnvironmentObject var session: SessionStore
+    
+    var body: some View {
+        // Create reference to item in firestore
+        let itemsRef = db.collection("restaurants").document(restaurantID).collection("menus").document(menu.id).collection("items")
+        
+        ScrollView(.vertical){
+            HStack{
+                Button(action: {
+                    self.data.vegetarianSelected.toggle()
+                    self.data.userDietSelected = false
+                    print("Vegetarian filter selected")
+                }){
+                    vegetarianSymbol().saturation(self.data.vegetarianSelected ? 1.0 : 0)
+                }
+                Button(action: {
+                    self.data.veganSelected.toggle()
+                    self.data.userDietSelected = false
+                    print("Vegan filter selected")
+                }){
+                    veganSymbol().saturation(self.data.veganSelected ? 1.0 : 0)
+                }
+                Button(action: {
+                    self.data.glutenFreeSelected.toggle()
+                    self.data.userDietSelected = false
+                    print("Gluten Free filter selected")
+                }){
+                    glutenFreeSymbol().saturation(self.data.glutenFreeSelected ? 1.0 : 0)
+                }
+                if let user = session.session{
+                    HStack{
+                        Button(action: {
+                            print("User diet selected")
+                            self.data.userDietSelected.toggle()
+                            if user.vegetarian!{
+                                self.data.vegetarianSelected = self.data.userDietSelected
+                            }
+                            if user.vegan!{
+                                self.data.veganSelected = self.data.userDietSelected
+                            }
+                            if user.coeliac!{
+                                self.data.glutenFreeSelected = self.data.userDietSelected
+                            }
+                        }){
+                            userDietSymbol().saturation(self.data.userDietSelected ? 1.0 : 0)
+                        }
+                    }
+                }
+            }
+            VStack(spacing: 0){
+                ForEach(self.data.filteredData){ item in
+                    Divider()
+                    itemCardView(item : item, itemsRef: itemsRef).frame(minHeight: 150,maxHeight: .infinity)
+                    // display each item from menu
+                }.animation(.default)
+                Divider()
+                Spacer()
+            }
+        }.padding(.top)
+        .onAppear(){
+            if firstLoad {
+                self.data.getData(restaurantID: restaurantID, menu: menu)
+                self.firstLoad = false
+            }
+        }.navigationTitle("\(menu.name)")
+    }
+    
 }
 
 struct MenuView_Previews: PreviewProvider {
