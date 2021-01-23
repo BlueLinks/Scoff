@@ -102,7 +102,7 @@
 				93030874255C264000A619B0 /* ScoffApp.swift */,
 				9393D5E7255C3938007E36B1 /* AppView.swift */,
 				930EA17825A20B400014A15B /* UserViews */,
-				930EA17A25A20B610014A15B /* RestrauntViews */,
+				9388E73025BC85BC00C24913 /* RestaurantViews */,
 				93F6E50E25A4D207002B7068 /* RestaurantAdminViews */,
 				9388112F258D0FAC0037ABF9 /* OrderView.swift */,
 				9303087A255C264300A619B0 /* Preview Content */,
@@ -135,7 +135,7 @@
 			path = UserViews;
 			sourceTree = "<group>";
 		};
-		930EA17A25A20B610014A15B /* RestrauntViews */ = {
+		9388E73025BC85BC00C24913 /* RestaurantViews */ = {
 			isa = PBXGroup;
 			children = (
 				93030876255C264000A619B0 /* RestaurantView.swift */,
@@ -145,7 +145,7 @@
 				933E4AD5257E9E6D00353FA6 /* MenuView.swift */,
 				936F654725BB385B00922F8E /* DietarySymbols.swift */,
 			);
-			path = RestrauntViews;
+			path = RestaurantViews;
 			sourceTree = "<group>";
 		};
 		93F6E50E25A4D207002B7068 /* RestaurantAdminViews */ = {
