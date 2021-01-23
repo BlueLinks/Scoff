@@ -248,7 +248,7 @@ struct UserDetailsView: View {
                 self.dateOfBirth = user.dateOfBirth!
                 self.coeliac = user.coeliac!
                 self.vegetarian = user.vegetarian!
-                self.vegan = user.vegetarian!
+                self.vegan = user.vegan!
             }
         }
     }
@@ -271,6 +271,13 @@ struct UserDetailsView: View {
                 } else {
                     print("Document successfully updated")
                     detailsChanged = false
+                    user.firstName = firstName
+                    user.lastName = lastName
+                    user.email = email
+                    user.dateOfBirth = dateOfBirth
+                    user.coeliac = coeliac
+                    user.vegetarian = vegetarian
+                    user.vegan = vegan
                 }
             }
         }
