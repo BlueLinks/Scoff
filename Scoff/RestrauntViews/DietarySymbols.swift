@@ -8,6 +8,10 @@
 import Foundation
 import SwiftUI
 
+extension Color {
+    static let darkGreen = Color("darkGreen")
+}
+
 struct vegetarianSymbol : View {
     var body: some View {
         //        ZStack {
@@ -23,7 +27,7 @@ struct vegetarianSymbol : View {
             .foregroundColor(.white)
             .frame(width: 30, height: 30, alignment: .center)
             .background(Circle()
-                            .fill(Color.green)
+                            .fill(Color.darkGreen)
             )
     }
 }
@@ -46,6 +50,17 @@ struct glutenFreeSymbol : View {
             .frame(width: 30, height: 30, alignment: .center)
             .background(Circle()
                             .fill(Color.orange)
+            )
+    }
+}
+
+struct userDietSymbol : View {
+    var body: some View {
+        Text("ME")
+            .foregroundColor(.white)
+            .frame(width: 30, height: 30, alignment: .center)
+            .background(Circle()
+                            .fill(Color.blue)
             )
     }
 }
