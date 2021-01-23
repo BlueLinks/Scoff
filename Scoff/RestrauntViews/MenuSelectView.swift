@@ -127,7 +127,7 @@ struct MenuSelectView: View {
                     Spacer()
                 }
             }.padding(.top)
-        }.navigationTitle("\(restaurant.name)")
+        }.navigationBarTitle("\(restaurant.name)", displayMode: .inline)
     }
     
     
