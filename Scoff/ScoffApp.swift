@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 import Stripe
 import Combine
+import MapKit
 
 class SessionStore : ObservableObject {
     var didChange = PassthroughSubject<SessionStore, Never>()
@@ -119,6 +120,7 @@ struct restaurantRaw : Identifiable {
     var id: String
     var name: String
     var picture: String
+    var location : CLLocationCoordinate2D = CLLocationCoordinate2D()
 }
 
 // For storing menus
