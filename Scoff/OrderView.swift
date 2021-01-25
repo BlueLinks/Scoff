@@ -10,6 +10,45 @@ import Stripe
 import URLImage
 import Firebase
 
+
+class limitedNumber: ObservableObject {
+    
+    var length : Int
+    
+    @Published var value = "" {
+        didSet {
+            let filtered = value.filter { $0.isNumber }
+            
+            if value != filtered {
+                value = filtered
+            }
+            if value.count > length {
+                value = String(value.prefix(length))
+            }
+        }
+    }
+    
+    init(_ length : Int){
+        self.length = length
+    }
+}
+
+class ExpiryYear: ObservableObject {
+    @Published var value = "" {
+        didSet {
+            let filtered = value.filter { $0.isNumber }
+            
+            if value != filtered {
+                value = filtered
+            }
+            
+            value = String(value.prefix(4))
+        }
+    }
+}
+
+
+
 struct OrderView: View {
     
     
@@ -17,15 +56,22 @@ struct OrderView: View {
     @EnvironmentObject var session: SessionStore
     
     @State private var itemsInCart : Bool = true
-    
+    @State private var tableWarn : Bool = false
+    @State var orderWarn : Bool = false
     @State private var tableNumberPicker : Int = 0
+    
+    @State var cardNum = limitedNumber(16)
+    @State var cardSec = limitedNumber(3)
+    @State var cardExpiryYear = limitedNumber(4)
+    @State var cardExpiryMonth = limitedNumber(2)
+    @State var cardName : String = ""
+    
+    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     
     private var tableNumber : Int {
         return tableNumberPicker + 1
     }
-    
-    @State private var tableWarn : Bool = false
-    @State var orderWarn : Bool = false
+
     
     var body: some View {
         NavigationView{
@@ -107,6 +153,28 @@ struct OrderView: View {
                                 Spacer()
                                 Text("£\(self.order.total, specifier: "%.2f")")
                             }
+                        }
+                        Section{
+                            HStack{
+                                Text("Card Number")
+                                TextField("",text: $cardNum.value).keyboardType(.numberPad)
+                            }
+                            HStack{
+                                Text("Expiry Month")
+                                TextField("",text: $cardExpiryMonth.value).keyboardType(.numberPad)
+                            }
+                            HStack{
+                                Text("Expiry Year")
+                                TextField("",text: $cardExpiryYear.value).keyboardType(.numberPad)
+                            }
+                            HStack{
+                                Text("CVC")
+                                TextField("",text: $cardSec.value).keyboardType(.numberPad)
+                            }
+                            HStack{
+                                Text("Name on card")
+                                TextField("",text: $cardName)
+                            }
                             
                             Button(action : {
                                 //Checkout button
@@ -134,7 +202,7 @@ struct OrderView: View {
                     Text("Add some items to your cart!")
                 }
                 
-            }.padding(.top)
+            }
             .navigationBarTitle("Checkout")
             .navigationBarItems(trailing: EditButton())
             
