@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import URLImage
+import MapKit
 
 
 
@@ -32,9 +33,9 @@ struct restaurantCardView : View {
                     
                     URLImage(url: URL(string: restaurant.picture)!){ image in
                         image
-                        .resizable()
+                            .resizable()
                             .scaledToFill()
-                        .frame(width: 180, height: 180, alignment : .center)
+                            .frame(width: 180, height: 180, alignment : .center)
                             .clipped()
                     }
                     
@@ -52,6 +53,8 @@ struct RestaurantSelectView: View {
     @State var data : [restaurantRaw] = []
     @State var time = Timer.publish(every: 0.1, on: .main, in: .tracking).autoconnect()
     @State var firstLoad = true
+    @State var mapIsActive = false
+    
     
     var body: some View {
         // loop through received restraunts
@@ -61,10 +64,18 @@ struct RestaurantSelectView: View {
                 if self.data.last!.id == i.id{
                     
                     GeometryReader{g in
-
+                        
                         // display restraunt
                         restaurantCardView(restaurant: i)
-                            
+                        
+                        // Navigation link for map view
+                        NavigationLink(
+                            destination: RestaurantMapView(data: $data),
+                            isActive: $mapIsActive
+                        ) {
+                            EmptyView()
+                        }.isDetailLink(false)
+                        
                         .onAppear{
                             
                             self.time = Timer.publish(every: 0.1, on: .main, in: .tracking).autoconnect()
@@ -91,8 +102,17 @@ struct RestaurantSelectView: View {
                 }
             }
         }
-            .navigationTitle("Select")
+        .navigationTitle("Select")
+        .navigationBarItems(trailing:
+                                Button(action: {
+                                    print("Map button pressed \(self.mapIsActive)")
+                                    self.mapIsActive = true
+                                }) {
+                                    Image(systemName: "map")
+                                }
+        )
         .onAppear(){
+            mapIsActive = false
             if firstLoad{
                 self.getFirstData()
                 self.firstLoad = false
@@ -101,7 +121,7 @@ struct RestaurantSelectView: View {
     }
     
     // Recieve data from firestore
-
+    
     
     func getFirstData() {
         db.collection("restaurants").order(by: "name").limit(to: 20).getDocuments { (snap, err) in
@@ -117,7 +137,7 @@ struct RestaurantSelectView: View {
         db.collection("restaurants").order(by: "name").limit(to: 20).start(afterDocument: self.lastDoc).limit(to: 20).getDocuments { (snap, err) in
             
             getData(snap: snap, err: err)
-        
+            
         }
     }
     
@@ -129,14 +149,18 @@ struct RestaurantSelectView: View {
         }
         
         for newRestaurant in snap!.documents{
-            let data = restaurantRaw(id: newRestaurant.documentID, name: newRestaurant.get("name") as! String, picture: newRestaurant.get("splash_image") as! String)
+            
+            let coords = newRestaurant.get("location") as! GeoPoint
+            let lat = coords.latitude
+            let lon = coords.longitude
+            let data = restaurantRaw(id: newRestaurant.documentID, name: newRestaurant.get("name") as! String, picture: newRestaurant.get("splash_image") as! String, location: CLLocationCoordinate2D(latitude: lat,longitude: lon))
             
             self.data.append(data)
         }
         
         self.lastDoc = snap!.documents.last
-            
-            
+        
+        
     }
     
 }

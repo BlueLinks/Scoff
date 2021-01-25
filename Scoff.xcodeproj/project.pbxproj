@@ -30,6 +30,8 @@
 		93881130258D0FAC0037ABF9 /* OrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9388112F258D0FAC0037ABF9 /* OrderView.swift */; };
 		9393D5E8255C3938007E36B1 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393D5E7255C3938007E36B1 /* AppView.swift */; };
 		9393D5EF255C3A3F007E36B1 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393D5EE255C3A3F007E36B1 /* UserView.swift */; };
+		93D639D625BF0479000A5EF7 /* RestaurantMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D639D525BF0479000A5EF7 /* RestaurantMapView.swift */; };
+		93D639DA25BF1123000A5EF7 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D639D925BF1123000A5EF7 /* MapView.swift */; };
 		93F6E50C25A4C652002B7068 /* ItemEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F6E50B25A4C652002B7068 /* ItemEditView.swift */; };
 		93F6E51325A4DAD9002B7068 /* ExtraEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F6E51225A4DAD9002B7068 /* ExtraEditView.swift */; };
 /* End PBXBuildFile section */
@@ -60,6 +62,8 @@
 		9388112F258D0FAC0037ABF9 /* OrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderView.swift; sourceTree = "<group>"; };
 		9393D5E7255C3938007E36B1 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		9393D5EE255C3A3F007E36B1 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
+		93D639D525BF0479000A5EF7 /* RestaurantMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantMapView.swift; sourceTree = "<group>"; };
+		93D639D925BF1123000A5EF7 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		93F6E50B25A4C652002B7068 /* ItemEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditView.swift; sourceTree = "<group>"; };
 		93F6E51225A4DAD9002B7068 /* ExtraEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtraEditView.swift; sourceTree = "<group>"; };
 		D093DDE5717D287BFAC70F4B /* Pods-Scoff.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Scoff.release.xcconfig"; path = "Target Support Files/Pods-Scoff/Pods-Scoff.release.xcconfig"; sourceTree = "<group>"; };
@@ -144,6 +148,8 @@
 				936F654225BB15C300922F8E /* SafariView.swift */,
 				933E4AD5257E9E6D00353FA6 /* MenuView.swift */,
 				936F654725BB385B00922F8E /* DietarySymbols.swift */,
+				93D639D525BF0479000A5EF7 /* RestaurantMapView.swift */,
+				93D639D925BF1123000A5EF7 /* MapView.swift */,
 			);
 			path = RestaurantViews;
 			sourceTree = "<group>";
@@ -298,11 +304,13 @@
 				9355AF3B25A388CE00E4A44E /* MenuEditView.swift in Sources */,
 				930EA18525A234F20014A15B /* UserDetailsView.swift in Sources */,
 				932BEF6B256C414B006ACD89 /* MenuSelectView.swift in Sources */,
+				93D639D625BF0479000A5EF7 /* RestaurantMapView.swift in Sources */,
 				9348BDB725AE23DA00D14921 /* ImagePicker.swift in Sources */,
 				936F654325BB15C300922F8E /* SafariView.swift in Sources */,
 				930EA17525A20B090014A15B /* SignUpView.swift in Sources */,
 				9355AF3725A35F0800E4A44E /* MenuCreationView.swift in Sources */,
 				93F6E50C25A4C652002B7068 /* ItemEditView.swift in Sources */,
+				93D639DA25BF1123000A5EF7 /* MapView.swift in Sources */,
 				933E4AD6257E9E6D00353FA6 /* MenuView.swift in Sources */,
 				936A2C9E25B5D547006409D0 /* IncomingOrdersView.swift in Sources */,
 				930EA18825A235070014A15B /* ReceiptsView.swift in Sources */,
