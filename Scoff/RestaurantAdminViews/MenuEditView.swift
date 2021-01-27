@@ -16,10 +16,18 @@ struct addNewItemSheet: View {
     @Binding var isPresented: Bool
     @State var name : String = ""
     @State var price : String = ""
-    @State var image : String = ""
+    @State var doublePrice : Double = 0.00
     @State var vegetarian : Bool = false
     @State var vegan : Bool = false
     @State var gluten : Bool = false
+    
+    @State private var imageToDisplay: Image?
+    @State private var imageSelected = false
+    @State private var image : UIImage?
+    @State private var showingImagePicker = false
+    @State private var inputImage: UIImage?
+    @State private var uploadProgress : Double = 0.00
+    @State private var showUploadProgress = false
     
     
     var body: some View{
@@ -31,7 +39,6 @@ struct addNewItemSheet: View {
                     TextField("",text: $name)
                 }
                 TextField("Price:", text: $price).keyboardType(.decimalPad)
-                TextField("Image:", text: $image)
                 Toggle(isOn: $vegetarian) {
                     Text("Suitable for vegetarians?")
                 }
@@ -42,8 +49,22 @@ struct addNewItemSheet: View {
                     Text("Contains gluten?")
                 }
                 Button(action: {
-                    let doublePrice = Double(price)
-                    addItem(name: name, price: doublePrice!, image: image, vegetarian: vegetarian, vegan: vegan, gluten: gluten)
+                    self.showingImagePicker = true
+                }){
+                    HStack{
+                        Text("Select an image")
+                        if imageToDisplay != nil {
+                            imageToDisplay?
+                                .resizable()
+                                .scaledToFit()
+                        }
+                    }
+                }.sheet(isPresented: $showingImagePicker, onDismiss: loadImage) {
+                    ImagePicker(image: self.$inputImage)
+                }
+                Button(action: {
+                    doublePrice = Double(price)!
+                    addItem()
                     
                 }){
                     HStack{
@@ -61,13 +82,13 @@ struct addNewItemSheet: View {
         }
     }
     
-    func addItem(name: String, price: Double, image: String, vegetarian: Bool, vegan : Bool, gluten : Bool){
+    func addItem(){
         if let user = session.session{
             var ref: DocumentReference? = nil
             ref = db.collection("restaurants").document(user.restaurantID!).collection("menus").document(menu.id).collection("items").addDocument(data: [
                 "name" : name,
-                "price" : price,
-                "image" : image,
+                "price" : doublePrice,
+                "image" : "",
                 "vegetarian" : vegetarian,
                 "vegan" : vegan,
                 "gluten" : gluten
@@ -77,15 +98,88 @@ struct addNewItemSheet: View {
                     print("Error adding menu: \(err)")
                 } else {
                     print("Menu added with ID: \(ref!.documentID)")
-                    data.append(itemRaw(id: ref!.documentID, name: name, price: price, image: image, vegetarian: vegetarian, vegan: vegan, gluten: gluten))
-                    self.isPresented = false
+                    uploadImage(docRef : ref!)
                 }
             }
         }
     }
     
+    
+    func loadImage() {
+        guard let inputImage = inputImage else { return }
+        imageToDisplay = Image(uiImage: inputImage)
+        image = inputImage
+        imageSelected = true
+    }
+    
+    func uploadImage(docRef : DocumentReference){
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        let splashRef = storageRef.child("restaurants/\(session.session!.restaurantID!)/\(docRef.documentID).jpg")
+        let localImage = image!.pngData()
+        
+        let uploadTask = splashRef.putData(localImage!, metadata: nil) { (metadata, error) in
+            guard let metadata = metadata else {
+                // Uh-oh, an error occurred!
+                print("Error Occured")
+                return
+            }
+            // Metadata contains file metadata such as size, content-type.
+            let size = metadata.size
+            // You can also access to download URL after upload.
+            splashRef.downloadURL { (url, error) in
+                guard let downloadURL = url else {
+                    print("Error Occured")
+                    // Uh-oh, an error occurred!
+                    return
+                }
+                
+            }
+            
+        }
+        
+        uploadTask.observe(.resume) { snapshot in
+            showUploadProgress = true
+        }
+        
+        uploadTask.observe(.progress) { snapshot in
+            // Upload reported progress
+            showUploadProgress = true
+            self.uploadProgress = 100.0 * Double(snapshot.progress!.completedUnitCount)
+                / Double(snapshot.progress!.totalUnitCount)
+            print(self.uploadProgress)
+        }
+        
+        uploadTask.observe(.success) { snapshot in
+            showUploadProgress = false
+            
+            if let user = session.session{
+                splashRef.downloadURL{( url, error) in
+                    guard let downloadURL = url else {
+                        print("ERROR")
+                        return
+                    }
+                    let splashImageUrlString = downloadURL.absoluteString
+                    print("download url is \(splashImageUrlString)")
+                    print()
+                    docRef.updateData([
+                        "image" : splashImageUrlString
+                    ]){ err in
+                        if let err = err {
+                            print("Error updating download url for item splash of firestore document: \(err)")
+                        } else {
+                            print("URL successfully updated")
+                            data.append(itemRaw(id: docRef.documentID, name: name, price: doublePrice, image: splashImageUrlString, vegetarian: vegetarian, vegan: vegan, gluten: gluten))
+                            self.isPresented = false
+                        }
+                    }
+                    
+                }
+                
+            }
+        }
+    }
 }
-
 
 
 
@@ -125,7 +219,7 @@ struct MenuEditView: View {
                 }
                 Section(header: Text("Items")){
                     ForEach(self.data){ item in
-                            NavigationLink(destination: ItemEditView(item: item, menu: menu)){
+                        NavigationLink(destination: ItemEditView(item: item, menu: menu)){
                             Text("\(item.name)")
                         }
                         // display each item from menu
@@ -216,10 +310,11 @@ struct MenuEditView: View {
     
     
     
-}
-
-struct MenuEditView_Previews: PreviewProvider {
-    static var previews: some View {
-        MenuEditView(menu: menuRaw(id : "", name: ""))
+    
+    
+    struct MenuEditView_Previews: PreviewProvider {
+        static var previews: some View {
+            MenuEditView(menu: menuRaw(id : "", name: ""))
+        }
     }
 }
