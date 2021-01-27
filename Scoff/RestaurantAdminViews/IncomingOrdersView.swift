@@ -23,7 +23,7 @@ class IncomingOrderModel : ObservableObject {
         // Create dispatch group for each receipt
         let orderGroup = DispatchGroup()
         
-        var orderRef = db.collection("restaurants").document(user.restaurantID!).collection("orders").order(by: "dateTime")
+        let orderRef = db.collection("restaurants").document(user.restaurantID!).collection("orders").order(by: "dateTime")
         
         // get receipts
         orderRef.addSnapshotListener { (receiptList, err) in
@@ -126,7 +126,7 @@ class IncomingOrderModel : ObservableObject {
                                 // append receipt to self.receipts in order to create views
                                 DispatchQueue.main.async {
                                     if newReceipt.items.count > 0 {
-                                        if !self.receipts.lazy.map{$0.id}.contains(receiptID){
+                                        if !self.receipts.lazy.map({$0.id}).contains(receiptID){
                                             self.receipts.append(newReceipt)
                                         }
                                     }

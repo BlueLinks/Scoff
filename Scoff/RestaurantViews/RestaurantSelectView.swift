@@ -153,7 +153,7 @@ struct RestaurantSelectView: View {
             let coords = newRestaurant.get("location") as! GeoPoint
             let lat = coords.latitude
             let lon = coords.longitude
-            let data = restaurantRaw(id: newRestaurant.documentID, name: newRestaurant.get("name") as! String, picture: newRestaurant.get("splash_image") as! String, location: CLLocationCoordinate2D(latitude: lat,longitude: lon))
+            let data = restaurantRaw(id: newRestaurant.documentID, name: newRestaurant.get("name") as! String, picture: newRestaurant.get("splash_image") as! String, location: CLLocationCoordinate2D(latitude: lat,longitude: lon), email: newRestaurant.get("email") as! String)
             
             self.data.append(data)
         }

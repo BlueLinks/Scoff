@@ -19,7 +19,7 @@ struct RestaurantMapView: View {
             let index = Int(restaurantAnnotation.subtitle!)
             return data[index!]
         }
-        return restaurantRaw(id: "", name: "placeholder", picture: "")
+        return restaurantRaw(id: "", name: "placeholder", picture: "", email: "")
     }
     
     
@@ -46,8 +46,8 @@ struct RestaurantMapView: View {
     
     func addLocations(){
         for index in data.indices {
-            var restaurant = data[index]
-            var newLocation = MKPointAnnotation()
+            let restaurant = data[index]
+            let newLocation = MKPointAnnotation()
             newLocation.coordinate = restaurant.location
             newLocation.title = restaurant.name
             newLocation.subtitle = String(index)

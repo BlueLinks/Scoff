@@ -160,6 +160,6 @@ struct MenuSelectView: View {
 
 struct MenuSelectView_Previews: PreviewProvider {
     static var previews: some View {
-        MenuSelectView(restaurant: restaurantRaw(id: "1", name: "Placeholder", picture: "None"))
+        MenuSelectView(restaurant: restaurantRaw(id: "1", name: "Placeholder", picture: "None", email: ""))
     }
 }

@@ -126,6 +126,7 @@ struct addNewItemSheet: View {
             }
             // Metadata contains file metadata such as size, content-type.
             let size = metadata.size
+            print("File size: \(size)")
             // You can also access to download URL after upload.
             splashRef.downloadURL { (url, error) in
                 guard let downloadURL = url else {
@@ -133,7 +134,7 @@ struct addNewItemSheet: View {
                     // Uh-oh, an error occurred!
                     return
                 }
-                
+                print("downloadURL: \(downloadURL)")
             }
             
         }
@@ -153,7 +154,7 @@ struct addNewItemSheet: View {
         uploadTask.observe(.success) { snapshot in
             showUploadProgress = false
             
-            if let user = session.session{
+            if session.session != nil{
                 splashRef.downloadURL{( url, error) in
                     guard let downloadURL = url else {
                         print("ERROR")
@@ -257,7 +258,7 @@ struct MenuEditView: View {
                         }
                         let storage = Storage.storage()
                         let storageRef = storage.reference()
-                        let splashRef = storageRef.child("restaurants/\(user.restaurantID!)/\(itemID).jpg").delete { err in
+                        storageRef.child("restaurants/\(user.restaurantID!)/\(itemID).jpg").delete { err in
                             if let err = err {
                                 print("Error in removing item splash image : \(err)")
                             } else {

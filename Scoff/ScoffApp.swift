@@ -121,6 +121,7 @@ struct restaurantRaw : Identifiable {
     var name: String
     var picture: String
     var location : CLLocationCoordinate2D = CLLocationCoordinate2D()
+    var email : String
 }
 
 // For storing menus
@@ -225,7 +226,7 @@ struct ScoffApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
-        var order = Order()
+        let order = Order()
         WindowGroup {
             AppView().environmentObject(order).environmentObject(SessionStore())
         }
