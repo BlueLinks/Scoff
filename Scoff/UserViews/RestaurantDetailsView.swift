@@ -31,7 +31,7 @@ struct RestaurantDetailsView: View {
                         Button(action: {
                             self.showingImagePicker = true
                         }){
-                            HStack{
+                            VStack{
                                 Text("Select image")
                                 if !imageSelected{
                                     if restaurant.picture != ""{
@@ -107,7 +107,7 @@ struct RestaurantDetailsView: View {
         let storage = Storage.storage()
         let storageRef = storage.reference()
         let splashRef = storageRef.child("restaurants/\(restaurant.id)/splash.jpg")
-        let localImage = image!.pngData()
+        let localImage = image!.jpegData(compressionQuality: 0.15)
         
         let uploadTask = splashRef.putData(localImage!, metadata: nil) { (metadata, error) in
             

@@ -116,7 +116,7 @@ struct addNewItemSheet: View {
         let storage = Storage.storage()
         let storageRef = storage.reference()
         let splashRef = storageRef.child("restaurants/\(session.session!.restaurantID!)/\(docRef.documentID).jpg")
-        let localImage = image!.pngData()
+        let localImage = image!.jpegData(compressionQuality: 0.15)
         
         let uploadTask = splashRef.putData(localImage!, metadata: nil) { (metadata, error) in
             guard let metadata = metadata else {
@@ -244,15 +244,29 @@ struct MenuEditView: View {
         .alert(isPresented:$deleteWarning){
             Alert(title: Text("Delete"), message: Text("Are you sure you want to delete \(nameToBeDeleted!)? This will delete this item and all of it's extras."), primaryButton: .destructive(Text("Delete")){
                 for row in self.toBeDeleted!{
+                    // Deleting item
                     print("Deleting", self.data[row].name)
                     if let user = session.session{
-                        db.collection("restaurants").document(user.restaurantID!).collection("menus").document(menu.id).collection("items").document(self.data[row].id).delete { err in
+                        let itemID = self.data[row].id
+                        db.collection("restaurants").document(user.restaurantID!).collection("menus").document(menu.id).collection("items").document(itemID).delete { err in
                             if let err = err {
                                 print("Error removing item: \(err)")
                             } else {
                                 print("Item successfully removed!")
                             }
                         }
+                        let storage = Storage.storage()
+                        let storageRef = storage.reference()
+                        let splashRef = storageRef.child("restaurants/\(user.restaurantID!)/\(itemID).jpg").delete { err in
+                            if let err = err {
+                                print("Error in removing item splash image : \(err)")
+                            } else {
+                                print("Splash image successfully removed!")
+                            }
+                            
+                        }
+                        
+                        
                     }
                 }
                 data.remove(atOffsets: self.toBeDeleted!)
