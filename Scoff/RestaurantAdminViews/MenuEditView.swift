@@ -8,6 +8,67 @@
 import SwiftUI
 import Firebase
 
+struct editMenuSheet: View {
+    
+    @Binding var menu : menuRaw
+    @Binding var isPresented: Bool
+    @EnvironmentObject var session: SessionStore
+    let db = Firestore.firestore()
+    @State var name : String = ""
+    @State var detailsChanged : Bool = false
+    @State var showSaveWarn : Bool = false
+    
+    var body : some View{
+        NavigationView{
+            Form{
+                TextField("",text: $name).onChange(of: name, perform: { (value) in
+                    if !(value == menu.name){
+                        print("name changed to \(value)")
+                        detailsChanged = true
+                    } else {
+                        detailsChanged = false
+                    }
+                })
+            }.navigationBarTitle(Text("Edit Menu"))
+            .navigationBarItems(trailing: Button(action: {
+                showSaveWarn = true
+            }) {
+                Text("Save").bold()
+            }.disabled(!detailsChanged))
+        }.alert(isPresented:$showSaveWarn){
+            Alert(title: Text("Save?"), message: Text("Are you sure you want to Save?"), primaryButton: .destructive(Text("Save")){
+                saveChanges()
+            }, secondaryButton: .cancel())
+        }
+        .onAppear(){
+            self.name = self.menu.name
+        }
+    }
+    
+    func saveChanges(){
+        print("Saving changes")
+        
+        if let user = session.session{
+            var menuRef: DocumentReference? = nil
+            menuRef = db.collection("restaurants").document(user.restaurantID!).collection("menus").document(menu.id)
+            menuRef?.updateData([
+                "name" : self.name
+            ]){
+                err in
+                if let err = err {
+                    print("Error updating menu: \(err)")
+                } else {
+                    print("Menu updated with ID: \(menuRef!.documentID)")
+                    self.menu.name = self.name
+                    self.isPresented = false
+                }
+            }
+        }
+    }
+    
+}
+
+
 struct addNewItemSheet: View {
     
     @EnvironmentObject var session: SessionStore
@@ -185,7 +246,7 @@ struct addNewItemSheet: View {
 
 
 struct MenuEditView: View {
-    var menu : menuRaw
+    @State var menu : menuRaw
     
     @EnvironmentObject var session: SessionStore
     
@@ -196,10 +257,11 @@ struct MenuEditView: View {
     @State var deleteWarning = false
     @State private var toBeDeleted: IndexSet?
     @State private var nameToBeDeleted : String?
+    @State var showEditMenu = false
     
     var body: some View {
         VStack(spacing: 0) {
-            List{
+            Form{
                 Section(header: Text("Menu Details")){
                     HStack{
                         Text("ID:")
@@ -218,6 +280,20 @@ struct MenuEditView: View {
                         Text(String("End Time")).foregroundColor(.gray)
                     }
                 }
+                Section{
+                    HStack{
+                        Button(action: {
+                            print("Edit Menu Button pressed")
+                            self.showEditMenu = true
+                        }){
+                            Text("Edit Menu")
+                                .font(.title)
+                        }.buttonStyle(formButtonStyle())
+                    }.sheet(isPresented: $showEditMenu){
+                        editMenuSheet(menu: $menu, isPresented: $showEditMenu)
+                    }
+                }
+                .listRowBackground(Color(.systemGroupedBackground))
                 Section(header: Text("Items")){
                     ForEach(self.data){ item in
                         NavigationLink(destination: ItemEditView(item: item, menu: menu)){
@@ -320,16 +396,6 @@ struct MenuEditView: View {
                     
                 }
             }
-        }
-    }
-    
-    
-    
-    
-    
-    struct MenuEditView_Previews: PreviewProvider {
-        static var previews: some View {
-            MenuEditView(menu: menuRaw(id : "", name: ""))
         }
     }
 }

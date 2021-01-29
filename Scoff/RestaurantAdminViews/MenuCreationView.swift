@@ -65,7 +65,7 @@ struct MenuCreationView: View {
     @EnvironmentObject var session: SessionStore
     @State var data : [menuRaw] = []
     @State var showingAddMenu = false
-    @State var firstLoad = true
+
     @State var deleteWarning = false
     @State private var toBeDeleted: IndexSet?
     @State private var nameToBeDeleted : String?
@@ -116,11 +116,9 @@ struct MenuCreationView: View {
         }
         
         .onAppear(perform: {
-                    if firstLoad{
+            self.data = []
                         getMenus()
-                        firstLoad = false
-                    }})
-        
+        })
     }
     
     func deleteMenu(at offsets: IndexSet) {
