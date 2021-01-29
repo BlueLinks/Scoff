@@ -75,7 +75,7 @@ struct MenuCreationView: View {
     
     var body: some View {
         
-        List{
+        Form{
             ForEach(self.data){ menu in
                 NavigationLink(destination: MenuEditView(menu: menu)){
                     Text("\(menu.name)")

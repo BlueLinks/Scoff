@@ -7,6 +7,213 @@
 
 import SwiftUI
 import Firebase
+import URLImage
+
+struct editItemSheet : View {
+    
+    var menu : menuRaw
+    @Binding var item : itemRaw
+    @Binding var isPresented: Bool
+    @EnvironmentObject var session: SessionStore
+    let db = Firestore.firestore()
+    @State var name : String = ""
+    @State var price : String = ""
+    @State var doublePrice : Double = 0
+    @State var gluten : Bool = false
+    @State var vegetarian : Bool = false
+    @State var vegan : Bool = false
+    @State var detailsChanged : Bool = false
+    @State var showSaveWarn : Bool = false
+    @State private var imageToDisplay: Image?
+    @State private var imageSelected = false
+    @State private var image : UIImage?
+    @State private var showingImagePicker = false
+    @State private var inputImage: UIImage?
+    
+    var body : some View{
+        NavigationView{
+            Form{
+                HStack{
+                    Text("Name:")
+                    TextField("",text: $name).onChange(of: name, perform: { (value) in
+                            print("name changed to \(value)")
+                            detailsChanged = true
+                    })
+                }
+                HStack{
+                    Text("Price: £")
+                    TextField("", text: $price).keyboardType(.decimalPad).onChange(of: price, perform: { (value) in
+                        print("price changed to \(price)")
+                        detailsChanged = true
+                    })
+                }
+                HStack{
+                    Toggle("Contains Gluten?", isOn: $gluten).onChange(of: gluten, perform: { (value) in
+                        print("gluten changed to \(value)")
+                        detailsChanged = true
+                    })
+                }
+                HStack{
+                    Toggle("Vegetarian?", isOn: $vegetarian).onChange(of: vegetarian, perform: { (value) in
+                        print("Vegetarian changed to \(value)")
+                        detailsChanged = true
+                    })
+                }
+                HStack{
+                    Toggle("Vegan?", isOn: $vegan).onChange(of: vegan, perform: { (value) in
+                        print("Vegan changed to \(value)")
+                        detailsChanged = true
+                    })
+                }
+                Button(action: {
+                    self.showingImagePicker = true
+                }){
+                    HStack{
+                        Text("Select image")
+                        Spacer()
+                        if !imageSelected{
+                            if item.image != ""{
+                                URLImage(url: URL(string: item.image)!){ image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                }
+                            }
+                        } else {
+                            if imageToDisplay != nil {
+                                imageToDisplay?
+                                    .resizable()
+                                    .scaledToFit()
+                                
+                            }
+                        }
+                    }.frame(height: 180)
+                    .sheet(isPresented: $showingImagePicker, onDismiss: loadImage) {
+                        ImagePicker(image: self.$inputImage)
+                    }
+                }
+
+            }.navigationBarTitle(Text("Edit Item"))
+            .navigationBarItems(trailing: Button(action: {
+                doublePrice = Double(price)!
+                showSaveWarn = true
+            }) {
+                Text("Save").bold()
+            }.disabled(!detailsChanged))
+        }.alert(isPresented:$showSaveWarn){
+            Alert(title: Text("Save?"), message: Text("Are you sure you want to Save?"), primaryButton: .destructive(Text("Save")){
+                saveChanges()
+            }, secondaryButton: .cancel())
+        }
+        .onAppear(){
+            self.name = self.item.name
+            self.price = String(self.item.price)
+            self.gluten = self.item.gluten
+            self.vegan = self.item.vegan
+            self.vegetarian = self.item.vegetarian
+        }
+    }
+    
+    
+    func loadImage() {
+        guard let inputImage = inputImage else { return }
+        imageToDisplay = Image(uiImage: inputImage)
+        image = inputImage
+        imageSelected = true
+        detailsChanged = true
+    }
+    
+    func saveChanges(){
+        print("Saving changes")
+        
+        if let user = session.session{
+            var itemRef: DocumentReference? = nil
+            itemRef = db.collection("restaurants").document(user.restaurantID!).collection("menus").document(menu.id).collection("items").document(item.id)
+            itemRef?.updateData([
+                "name" : self.name,
+                "price" : self.doublePrice,
+                "gluten" : self.gluten,
+                "vegan" : self.vegan,
+                "vegetarian" : self.vegetarian
+            ]){
+                err in
+                if let err = err {
+                    print("Error updating item: \(err)")
+                } else {
+                    print("Menu updated with ID: \(itemRef!.documentID)")
+                    if (imageSelected){
+                        uploadImage(docRef : itemRef!)
+                    }
+                    self.item.name = self.name
+                    self.item.price = self.doublePrice
+                    self.item.gluten = self.gluten
+                    self.item.vegan = self.vegan
+                    self.item.vegetarian = self.vegetarian
+                    self.isPresented = false
+                }
+            }
+        }
+    }
+    
+    
+    func uploadImage(docRef : DocumentReference){
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        let splashRef = storageRef.child("restaurants/\(session.session!.restaurantID!)/\(docRef.documentID).jpg")
+        let localImage = image!.jpegData(compressionQuality: 0.15)
+        
+        let uploadTask = splashRef.putData(localImage!, metadata: nil) { (metadata, error) in
+            guard let metadata = metadata else {
+                // Uh-oh, an error occurred!
+                print("Error Occured")
+                return
+            }
+            // Metadata contains file metadata such as size, content-type.
+            let size = metadata.size
+            print("File size: \(size)")
+            // You can also access to download URL after upload.
+            splashRef.downloadURL { (url, error) in
+                guard let downloadURL = url else {
+                    print("Error Occured")
+                    // Uh-oh, an error occurred!
+                    return
+                }
+                print("downloadURL: \(downloadURL)")
+            }
+            
+        }
+        
+        uploadTask.observe(.success) { snapshot in
+            
+            if session.session != nil{
+                splashRef.downloadURL{( url, error) in
+                    guard let downloadURL = url else {
+                        print("ERROR")
+                        return
+                    }
+                    let splashImageUrlString = downloadURL.absoluteString
+                    print("download url is \(splashImageUrlString)")
+                    print()
+                    docRef.updateData([
+                        "image" : splashImageUrlString
+                    ]){ err in
+                        if let err = err {
+                            print("Error updating download url for item splash of firestore document: \(err)")
+                        } else {
+                            print("URL successfully updated")
+                            self.item.image = splashImageUrlString
+                            self.isPresented = false
+                        }
+                    }
+                    
+                }
+                
+            }
+        }
+    }
+    
+}
+
 
 struct addNewExtraSheet: View {
     
@@ -82,7 +289,7 @@ struct addNewExtraSheet: View {
 
 
 struct ItemEditView: View {
-    var item : itemRaw
+    @State var item : itemRaw
     var menu : menuRaw
     
     @EnvironmentObject var session: SessionStore
@@ -94,10 +301,21 @@ struct ItemEditView: View {
     @State var deleteWarning = false
     @State private var toBeDeleted: IndexSet?
     @State private var nameToBeDeleted : String?
+    @State var showEditItem = false
     
     var body: some View {
         VStack(spacing: 0) {
-            List{
+            Form{
+                HStack{
+                    Spacer()
+                    URLImage(url: URL(string: item.image)!){ image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                    }
+                    Spacer()
+                }.listRowBackground(Color(.systemGroupedBackground))
                 Section(header: Text("Item Details")){
                     HStack{
                         Text("ID:")
@@ -120,10 +338,24 @@ struct ItemEditView: View {
                         Text(String(item.vegan)).foregroundColor(.gray)
                     }
                     HStack{
-                        Text("Gluten?")
-                        Text(String(item.vegan)).foregroundColor(.gray)
+                        Text("Contains Gluten?")
+                        Text(String(item.gluten)).foregroundColor(.gray)
                     }
                 }
+                Section{
+                    HStack{
+                        Button(action: {
+                            print("Edit item Button pressed")
+                            self.showEditItem = true
+                        }){
+                            Text("Edit Item")
+                                .font(.title)
+                        }.buttonStyle(formButtonStyle())
+                    }.sheet(isPresented: $showEditItem){
+                        editItemSheet(menu : menu, item: $item, isPresented: $showEditItem)
+                    }
+                }
+                .listRowBackground(Color(.systemGroupedBackground))
                 Section(header: Text("Extras")){
                     ForEach(self.data){ extra in
                         NavigationLink(destination: ExtraEditView(menu: menu, item: item, extra: extra)){

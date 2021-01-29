@@ -263,7 +263,6 @@ struct MenuEditView: View {
     
     let db = Firestore.firestore()
     @State var data : [itemRaw] = []
-    @State var firstLoad = true
     @State var showingAddItem = false
     @State var deleteWarning = false
     @State private var toBeDeleted: IndexSet?
@@ -373,10 +372,8 @@ struct MenuEditView: View {
         .navigationBarTitle("\(menu.name)", displayMode: .automatic)
         
         .onAppear(){
-            if firstLoad {
-                self.getItems()
-                self.firstLoad = false
-            }
+            self.data = []
+            self.getItems()
         }
     }
     
