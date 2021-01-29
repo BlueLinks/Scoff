@@ -38,11 +38,7 @@ struct RestaurantView: View {
                             Text("Find a restaurant ")
                             Image(systemName : "chevron.right")
                         }
-                        .font(.title)
-                        .padding()
-                        .background(Color.blue)
-                        .clipShape(Capsule())
-                        .foregroundColor(.white)
+                        .blueButtonStyle()
                         
                     }
                     Spacer()

@@ -20,12 +20,12 @@ struct menuCardView : View {
             HStack(spacing: 15){
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    
                     Text(menu.name)
                         .font(.title)
-                    
-                    Text("Description")
-                        .font(.body)
+                    if menu.description != "" {
+                        Text(menu.description)
+                            .font(.body).foregroundColor(.gray)
+                    }
                 }.padding(.leading, 10)
                 Spacer()
                 
@@ -145,7 +145,7 @@ struct MenuSelectView: View {
             for newMenu in menuList!.documents{
                 
                 // construct new menu
-                let menu = menuRaw(id: newMenu.documentID, name: newMenu.get("name") as! String)
+                let menu = menuRaw(id: newMenu.documentID, name: newMenu.get("name") as! String, description: newMenu.get("description") as! String)
                 
                 // append new menu to list of menus
                 self.data.append(menu)

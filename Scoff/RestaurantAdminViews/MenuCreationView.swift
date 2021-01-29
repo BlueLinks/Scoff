@@ -16,11 +16,13 @@ struct addNewMenuSheet: View {
     @Binding var data: [menuRaw]
     @Binding var isPresented: Bool
     @State var name : String = ""
+    @State var description = ""
     
     var body: some View{
         NavigationView{
             Form{
                 TextField("Enter name for menu:", text: $name)
+                TextField("Enter description for menu:", text: $description)
                 Button(action: {
                     addMenu(name: name)
                     
@@ -44,14 +46,15 @@ struct addNewMenuSheet: View {
         if let user = session.session{
             var ref: DocumentReference? = nil
             ref = db.collection("restaurants").document(user.restaurantID!).collection("menus").addDocument(data: [
-                "name" : name
+                "name" : name,
+                "description" : description
             ]) {
                 err in
                 if let err = err {
                     print("Error adding menu: \(err)")
                 } else {
                     print("Menu added with ID: \(ref!.documentID)")
-                    data.append(menuRaw(id: ref!.documentID, name: name))
+                    data.append(menuRaw(id: ref!.documentID, name: name, description: description))
                     self.isPresented = false
                 }
             }

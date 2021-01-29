@@ -15,6 +15,7 @@ struct editMenuSheet: View {
     @EnvironmentObject var session: SessionStore
     let db = Firestore.firestore()
     @State var name : String = ""
+    @State var description : String = ""
     @State var detailsChanged : Bool = false
     @State var showSaveWarn : Bool = false
     
@@ -24,6 +25,14 @@ struct editMenuSheet: View {
                 TextField("",text: $name).onChange(of: name, perform: { (value) in
                     if !(value == menu.name){
                         print("name changed to \(value)")
+                        detailsChanged = true
+                    } else {
+                        detailsChanged = false
+                    }
+                })
+                TextField("",text: $description).onChange(of: description, perform: { (value) in
+                    if !(value == menu.description){
+                        print("description changed to \(value)")
                         detailsChanged = true
                     } else {
                         detailsChanged = false
@@ -52,7 +61,8 @@ struct editMenuSheet: View {
             var menuRef: DocumentReference? = nil
             menuRef = db.collection("restaurants").document(user.restaurantID!).collection("menus").document(menu.id)
             menuRef?.updateData([
-                "name" : self.name
+                "name" : self.name,
+                "description" : self.description
             ]){
                 err in
                 if let err = err {
@@ -60,6 +70,7 @@ struct editMenuSheet: View {
                 } else {
                     print("Menu updated with ID: \(menuRef!.documentID)")
                     self.menu.name = self.name
+                    self.menu.description = self.description
                     self.isPresented = false
                 }
             }
@@ -270,6 +281,10 @@ struct MenuEditView: View {
                     HStack{
                         Text("Name:")
                         Text(menu.name).foregroundColor(.gray)
+                    }
+                    HStack{
+                        Text("Description:")
+                        Text(menu.description).foregroundColor(.gray)
                     }
                     HStack{
                         Text("Start Time:")
