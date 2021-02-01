@@ -161,3 +161,41 @@
 ### 16 Jan 2021
 
 -   _2 hours_ Users can now place orders, orders are uploaded to both the restaurants order collection and if the user is signed in, their orders collection.
+
+### 17 Jan 2021
+
+-   _3 hours_ Customers can now view their order history.
+
+## Week 18
+
+### 18 Jan 2021
+
+-   _6.5 hours_ Restaurant admins can now view orders coming in live.
+
+### 22 Jan 2021
+
+-   _1 hours_ Check in scotland form is now displayed when restaurant is selected.
+
+-   _4 hours_ Users can now specify their dietary preferences.
+
+### 23 Jan 2021
+
+-   _4 hours_ Users can now filter items by dietary requirements as well as their dietary preferences.
+
+## Week 19
+
+### 25 Jan 2021
+
+-   _5 hours_ Restaurants can now be selected via a map.
+
+### 27 Jan 2021
+
+-   _5 hours_ Restaurant admins can now modify restaurant details and upload images for items.
+
+### 29 Jan 2021
+
+-   _5 hours_ Restaurant admins can now modify menus, items and their extras as including modifying images for items.
+
+# Week 20
+
+-   _0.5 hours_ If a user has items in their basket, they will be warned when moving back to the restaurant selection screen that their basket will be emptied.
