@@ -15,10 +15,9 @@ struct menuCardView : View {
     var restaurantID : String
     
     var body: some View{
-        // create link to view of restraunts menus
+        // create link to view of menu
         NavigationLink(destination: MenuView(menu: menu, restaurantID : restaurantID)){
             HStack(spacing: 15){
-                
                 VStack(alignment: .leading, spacing: 8) {
                     Text(menu.name)
                         .font(.title)
@@ -39,6 +38,8 @@ struct menuCardView : View {
 
 struct MenuSelectView: View {
     
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     let db = Firestore.firestore()
     var restaurant: restaurantRaw
     @EnvironmentObject var order : Order
@@ -46,6 +47,7 @@ struct MenuSelectView: View {
     @State var data : [menuRaw] = []
     @State var firstLoad = true
     
+    @State var orderWarn = false
     @State var trackWarn = true
     @Environment(\.openURL) var openURL
     @State var showSafariView = false
@@ -98,9 +100,12 @@ struct MenuSelectView: View {
                     }
                 }.background(Color.black)
                 .alert(isPresented:$trackWarn){
+                    // Show warning for track and trace
                     Alert(title: Text("Check in Scotland"), message: Text("One member of your party must complete a Check in Scotland Form"), primaryButton: .destructive(Text("I will")){
+                        // User has agreed to fill out form
                         print("Open link")
                         self.url = "https://scoff-a30ae.web.app/?name=" + restaurant.name
+                        // opens check in scotland in safari in app
                         self.showSafariView.toggle()
                     }, secondaryButton: .cancel(Text("Someone else will")))
                 }
@@ -121,13 +126,38 @@ struct MenuSelectView: View {
                     ForEach(self.data){ menu in
                         menuCardView(menu : menu, restaurantID : restaurant.id)
                         Divider()
-                        // display each item from menu
                     }
-                    
                     Spacer()
                 }
-            }.padding(.top)
+            }.alert(isPresented:$orderWarn){
+                // Show alert that the user has already got items in their basket
+                // This is to avoid the user adding items from multiple restaurants to their order
+                Alert(title: Text("You're already ordering here!"), message: Text("Empty basket and move to another restaurant?"), primaryButton: .destructive(Text("Empty basket")){
+                    // User is moving to new restaurant
+                    order.items = []
+                    order.restaurant = nil
+                    self.presentationMode.wrappedValue.dismiss()
+                }, secondaryButton: .cancel(Text("I'll stay here")))
+            }
+            .padding(.top)
         }.navigationBarTitle("\(restaurant.name)", displayMode: .inline)
+        // Hide the back button created by the navigation view
+        .navigationBarBackButtonHidden(true)
+        // Create new back button
+        .navigationBarItems(leading: Button(action: {
+            // Check if the user has items in their basket
+            if order.items.count > 0 {
+                orderWarn = true
+            } else {
+                // Users basket is empty to no need to warn, safe to move back to restaurant selection view
+                self.presentationMode.wrappedValue.dismiss()
+            }
+        }){
+            HStack{
+                Image(systemName: "chevron.left")
+                Text("Back")
+            }
+        })
     }
     
     
