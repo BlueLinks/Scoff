@@ -31,7 +31,13 @@ struct blueButton : ViewModifier {
     }
 }
 
-
+struct blueButtonStyle : ButtonStyle {
+    
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .blueButtonStyle()
+    }
+}
 extension View {
     func blueButtonStyle() -> some View {
         self.modifier(blueButton())

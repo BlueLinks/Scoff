@@ -51,58 +51,63 @@ struct RestaurantSelectView: View {
     let db = Firestore.firestore()
     @State var lastDoc : QueryDocumentSnapshot!
     @State var data : [restaurantRaw] = []
+    @State var searchData : [restaurantRaw] = []
     @State var time = Timer.publish(every: 0.1, on: .main, in: .tracking).autoconnect()
     @State var firstLoad = true
     @State var mapIsActive = false
+    @State var searchText : String = ""
+    @State var showFindMoreButton: Bool = false
     
     
     var body: some View {
-        // loop through received restraunts
-        ForEach(self.data){ i in
-            ZStack{
-                
-                if self.data.last!.id == i.id{
-                    
-                    GeometryReader{g in
-                        
-                        // display restraunt
-                        restaurantCardView(restaurant: i)
-                        
-                        // Navigation link for map view
-                        NavigationLink(
-                            destination: RestaurantMapView(data: $data),
-                            isActive: $mapIsActive
-                        ) {
-                            EmptyView()
-                        }.isDetailLink(false)
-                        
-                        .onAppear{
-                            
-                            self.time = Timer.publish(every: 0.1, on: .main, in: .tracking).autoconnect()
-                        }
-                        .onReceive(self.time) { (_) in
-                            
-                            if g.frame(in: .global).maxY < UIScreen.main.bounds.height - 80{
-                                
-                                self.UpdateData()
-                                
-                                print("Update Data...")
-                                
-                                self.time.upstream.connect().cancel()
-                            }
-                        }
-                    }
-                    .frame(height: 65)
-                    
-                }
-                else{
+        VStack(spacing: 0){
+            
+            // Navigation link for map view
+            NavigationLink(
+                destination: RestaurantMapView(data: $data),
+                isActive: $mapIsActive
+            ) {
+                EmptyView()
+            }.isDetailLink(false)
+            
+            // Display search bar
+            SearchBar(text: $searchText, data: $searchData)
+                .padding(.top)
+                .padding(.bottom)
+            // loop through received restraunts
+            if searchText.isEmpty{
+                // User is not searching, display results as usual
+                ForEach(self.data){ i in
                     
                     restaurantCardView(restaurant: i)
+                }
+                
+                if showFindMoreButton{
+                    // Display button for finding more restaurants
+                    Button(action: {
+                        print("Finding more restaurants")
+                        UpdateData()
+                    }){
+                        Text("Get More").blueButtonStyle()
+                    }
+                }
+            } else {
+                // User is searching
+                VStack{
+                    ForEach(self.searchData){ i in
+                        
+                        restaurantCardView(restaurant: i)
+                    }
                     
                 }
+                .onAppear(perform: {
+                    self.searchData = []
+                    print("User is now searching")
+                })
             }
+            Spacer()
         }
-        .navigationTitle("Select")
+        .navigationBarTitle("Select")
         .navigationBarItems(trailing:
                                 Button(action: {
                                     print("Map button pressed \(self.mapIsActive)")
@@ -158,7 +163,15 @@ struct RestaurantSelectView: View {
             self.data.append(data)
         }
         
-        self.lastDoc = snap!.documents.last
+        if let lastDoc = snap!.documents.last{
+            if !(snap!.documents.count < 20) {
+                self.showFindMoreButton = true
+            }
+            self.lastDoc = snap!.documents.last
+        } else {
+            self.showFindMoreButton = false
+        }
+        
         
         
     }
