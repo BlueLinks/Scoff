@@ -128,7 +128,7 @@ struct restaurantRaw : Identifiable {
 struct menuRaw : Identifiable {
     var id: String = ""
     var name: String = ""
-    var description = ""
+    var description: String = ""
 }
 
 // For storing items from menu

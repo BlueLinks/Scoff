@@ -40,7 +40,7 @@ struct AppView: View {
                             Image(systemName: "person")
                             Text("User")
                         }
-                }
+                }.edgesIgnoringSafeArea(.top)
                 // Check if order contains any items
                 if (order.items.count > 0){
                     // if so then display red badge on order tab icon with number of items

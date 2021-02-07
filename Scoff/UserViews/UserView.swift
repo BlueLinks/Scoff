@@ -95,7 +95,7 @@ struct UserView : View {
                     }
                 }
             }.onAppear(perform: getUser)
-            .navigationTitle("User")
+            .navigationBarTitle("User")
         }
     }
     

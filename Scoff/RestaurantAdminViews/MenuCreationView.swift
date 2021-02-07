@@ -94,7 +94,7 @@ struct MenuCreationView: View {
             }
             
             .navigationBarItems(trailing: EditButton())
-            .navigationTitle("Edit Menus")
+            .navigationBarTitle("Edit Menus", displayMode: .inline)
         }.alert(isPresented:$deleteWarning){
             Alert(title: Text("Delete"), message: Text("Are you sure you want to delete \(nameToBeDeleted!)? This wil delete this menu along with all it's items and their extras."), primaryButton: .destructive(Text("Delete")){
                 for row in self.toBeDeleted!{
@@ -120,7 +120,7 @@ struct MenuCreationView: View {
         
         .onAppear(perform: {
             self.data = []
-                        getMenus()
+            getMenus()
         })
     }
     
@@ -147,7 +147,7 @@ struct MenuCreationView: View {
                 for newMenu in menuList!.documents{
                     
                     // construct new menu
-                    let menu = menuRaw(id: newMenu.documentID, name: newMenu.get("name") as! String)
+                    let menu = menuRaw(id: newMenu.documentID, name: newMenu.get("name") as! String, description: newMenu.get("description") as! String)
                     
                     // append new menu to list of menus
                     self.data.append(menu)

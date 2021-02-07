@@ -22,6 +22,8 @@ struct editMenuSheet: View {
     var body : some View{
         NavigationView{
             Form{
+                HStack{
+                    Text("Name:")
                 TextField("",text: $name).onChange(of: name, perform: { (value) in
                     if !(value == menu.name){
                         print("name changed to \(value)")
@@ -29,7 +31,11 @@ struct editMenuSheet: View {
                     } else {
                         detailsChanged = false
                     }
+                
                 })
+                }
+                HStack{
+                    Text("Description:")
                 TextField("",text: $description).onChange(of: description, perform: { (value) in
                     if !(value == menu.description){
                         print("description changed to \(value)")
@@ -38,6 +44,7 @@ struct editMenuSheet: View {
                         detailsChanged = false
                     }
                 })
+                }
             }.navigationBarTitle(Text("Edit Menu"))
             .navigationBarItems(trailing: Button(action: {
                 showSaveWarn = true
@@ -51,6 +58,7 @@ struct editMenuSheet: View {
         }
         .onAppear(){
             self.name = self.menu.name
+            self.description = self.menu.description
         }
     }
     
