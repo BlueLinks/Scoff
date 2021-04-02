@@ -76,7 +76,7 @@ struct dietaryItemSymbolsView : View {
             if item.vegan {
                 veganSymbol()
             }
-            if item.gluten {
+            if !item.gluten {
                 glutenFreeSymbol()
             }
         }
