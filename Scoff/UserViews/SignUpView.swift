@@ -22,6 +22,7 @@ struct SignUpView : View {
     @State var confirmPassword: String = ""
     @State var loading = false
     @State var error = false
+    @State var errorText = ""
     @State var passwordMatchAlert = false
     
     let db = Firestore.firestore()
@@ -42,13 +43,17 @@ struct SignUpView : View {
         session.signUp(email: email, password: password) { (result, error) in
             self.loading = false
             if error != nil {
+                self.errorText = error!.localizedDescription
                 self.error = true
             } else {
                 db.collection("users").document(result!.user.uid).setData([
                     "firstName" : self.firstName,
                     "lastName" : self.lastName,
                     "email" : self.email,
-                    "dateOfBirth" : self.dob
+                    "dateOfBirth" : self.dob,
+                    "coeliac" : self.coeliac,
+                    "vegan": self.vegan,
+                    "vegetarian" : self.vegetarian
                 ]){ err in
                     if let err = err {
                         print("Error writing document: \(err)")
@@ -78,7 +83,7 @@ struct SignUpView : View {
                 SecureField("Confirm Password", text: $confirmPassword)
             }
             if (error) {
-                Text("ahhh crap")
+                Text(self.errorText)
             }
             Button(action: {
                 if password == confirmPassword{
