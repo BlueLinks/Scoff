@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Firebase
-import Stripe
 import Combine
 import MapKit
 
@@ -186,7 +185,6 @@ class Order: ObservableObject {
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        StripeAPI.defaultPublishableKey = "pk_test_51HzjrjGkZWQT55VmRsQ4o8nhNAPCtPavVBD4v37MFkhZC8bY27OWksEHBNo8ZFXlCh6V5YUKtNdODpVnaQ7Rzz7w00zpkm1vv5"
         // do any other necessary launch configuration
         return true
     }
