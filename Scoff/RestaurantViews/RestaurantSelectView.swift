@@ -20,7 +20,6 @@ struct restaurantCardView : View {
         // create link to view of restraunts menus
         NavigationLink(destination: MenuSelectView(restaurant: restaurant)){
             VStack(spacing: 0){
-                Divider()
                 HStack(spacing: 15){
                     
                     VStack(alignment: .leading, spacing: 12) {
@@ -77,28 +76,35 @@ struct RestaurantSelectView: View {
             // loop through received restraunts
             if searchText.isEmpty{
                 // User is not searching, display results as usual
-                ForEach(self.data){ i in
+                List{
+                    ForEach(self.data){ i in
+                        
+                        restaurantCardView(restaurant: i)
+                    }
                     
-                    restaurantCardView(restaurant: i)
-                }
-                
-                if showFindMoreButton{
-                    // Display button for finding more restaurants
-                    Button(action: {
-                        print("Finding more restaurants")
-                        UpdateData()
-                    }){
-                        Text("Get More").blueButtonStyle()
+                    if showFindMoreButton{
+                        // Display button for finding more restaurants
+                        Button(action: {
+                            print("Finding more restaurants")
+                            UpdateData()
+                        }){
+                            HStack{
+                                Spacer()
+                            Text("Get More").blueButtonStyle()
+                                Spacer()
+                            }
+                        }
                     }
                 }
             } else {
                 // User is searching
                 VStack{
-                    ForEach(self.searchData){ i in
-                        
-                        restaurantCardView(restaurant: i)
+                    List{
+                        ForEach(self.searchData){ i in
+                            
+                            restaurantCardView(restaurant: i)
+                        }
                     }
-                    
                 }
                 .onAppear(perform: {
                     self.searchData = []
@@ -129,7 +135,7 @@ struct RestaurantSelectView: View {
     
     
     func getFirstData() {
-        db.collection("restaurants").order(by: "name").limit(to: 20).getDocuments { (snap, err) in
+        db.collection("restaurants").order(by: "name").limit(to: 5).getDocuments { (snap, err) in
             
             getData(snap: snap, err: err)
             
@@ -139,7 +145,7 @@ struct RestaurantSelectView: View {
     
     func UpdateData() {
         
-        db.collection("restaurants").order(by: "name").limit(to: 20).start(afterDocument: self.lastDoc).limit(to: 20).getDocuments { (snap, err) in
+        db.collection("restaurants").order(by: "name").limit(to: 5).start(afterDocument: self.lastDoc).limit(to: 5).getDocuments { (snap, err) in
             
             getData(snap: snap, err: err)
             
@@ -154,7 +160,7 @@ struct RestaurantSelectView: View {
         }
         
         for newRestaurant in snap!.documents{
-            
+             
             let coords = newRestaurant.get("location") as! GeoPoint
             let lat = coords.latitude
             let lon = coords.longitude
@@ -164,10 +170,10 @@ struct RestaurantSelectView: View {
         }
         
         if let lastDoc = snap!.documents.last{
-            if !(snap!.documents.count < 20) {
+            if !(snap!.documents.count < 5) {
                 self.showFindMoreButton = true
             }
-            self.lastDoc = snap!.documents.last
+            self.lastDoc = lastDoc
         } else {
             self.showFindMoreButton = false
         }
