@@ -24,7 +24,7 @@ struct AppView: View {
                     RestaurantView()
                         .tabItem {
                             Image(systemName: "magnifyingglass")
-                            Text("Menu")
+                            Text("Restaurant")
                         }
                     
                     // View for displaying current order and checkout
