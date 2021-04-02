@@ -75,6 +75,15 @@ struct MenuSelectView: View {
                             Text("From current location").foregroundColor(.white)
                             Spacer()
                             Spacer()
+                        }.alert(isPresented:$trackWarn){
+                            // Show warning for track and trace
+                            Alert(title: Text("Check in Scotland"), message: Text("One member of your party must complete a Check in Scotland Form"), primaryButton: .destructive(Text("I will")){
+                                // User has agreed to fill out form
+                                print("Open link")
+                                self.url = "https://scoff-a30ae.web.app/?name=" + restaurant.name
+                                // opens check in scotland in safari in app
+                                self.showSafariView.toggle()
+                            }, secondaryButton: .cancel(Text("Someone else will")))
                         }
                         .padding(5)
                         HStack{
@@ -82,6 +91,15 @@ struct MenuSelectView: View {
                             Text("⭐️ 3/5")
                                 .foregroundColor(.white)
                             Spacer()
+                        }.alert(isPresented:$orderWarn){
+                            // Show alert that the user has already got items in their basket
+                            // This is to avoid the user adding items from multiple restaurants to their order
+                            Alert(title: Text("You're already ordering here!"), message: Text("Empty basket and move to another restaurant?"), primaryButton: .destructive(Text("Empty basket")){
+                                // User is moving to new restaurant
+                                order.items = []
+                                order.restaurant = nil
+                                self.presentationMode.wrappedValue.dismiss()
+                            }, secondaryButton: .cancel(Text("I'll stay here")))
                         }
                         .padding(.leading)
                         .padding(.bottom, 5)
@@ -99,18 +117,9 @@ struct MenuSelectView: View {
                         .padding(.bottom, 5)
                     }
                 }.background(Color.black)
-                .alert(isPresented:$trackWarn){
-                    // Show warning for track and trace
-                    Alert(title: Text("Check in Scotland"), message: Text("One member of your party must complete a Check in Scotland Form"), primaryButton: .destructive(Text("I will")){
-                        // User has agreed to fill out form
-                        print("Open link")
-                        self.url = "https://scoff-a30ae.web.app/?name=" + restaurant.name
-                        // opens check in scotland in safari in app
-                        self.showSafariView.toggle()
-                    }, secondaryButton: .cancel(Text("Someone else will")))
-                }
+                
                 .fullScreenCover(isPresented: $showSafariView) {
-                    SafariView(url: URL(string: url)!).edgesIgnoringSafeArea(.all)
+                    SafariView(url: URL(string: self.url)!).edgesIgnoringSafeArea(.all)
                 }
                 
                 .onAppear(){
@@ -129,16 +138,8 @@ struct MenuSelectView: View {
                     }
                     Spacer()
                 }
-            }.alert(isPresented:$orderWarn){
-                // Show alert that the user has already got items in their basket
-                // This is to avoid the user adding items from multiple restaurants to their order
-                Alert(title: Text("You're already ordering here!"), message: Text("Empty basket and move to another restaurant?"), primaryButton: .destructive(Text("Empty basket")){
-                    // User is moving to new restaurant
-                    order.items = []
-                    order.restaurant = nil
-                    self.presentationMode.wrappedValue.dismiss()
-                }, secondaryButton: .cancel(Text("I'll stay here")))
             }
+            
             .padding(.top)
         }.navigationBarTitle("\(restaurant.name)", displayMode: .inline)
         // Hide the back button created by the navigation view

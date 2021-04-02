@@ -66,7 +66,7 @@ class ReceiptViewModel : ObservableObject {
     @EnvironmentObject var session: SessionStore
     private var db = Firestore.firestore()
     
-    private var lastReceipt : DocumentSnapshot? = nil
+    var lastReceipt : DocumentSnapshot? = nil
     
     
     func getPastOrders(user : User){
@@ -193,7 +193,7 @@ struct headerView : View {
     var receipt : receipt
     var formatter : DateFormatter {
         let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm, d/m/y"
+        formatter.dateFormat = "HH:mm, d/MM/YY"
         return formatter
     }
     
@@ -267,14 +267,15 @@ struct ReceiptsView: View {
         }.listStyle(GroupedListStyle())
         .navigationBarTitle("Receipts")
         .onAppear(){
-            if firstLoad {
+                
                 if let user = session.session{
                     receiptViewModel.receipts = []
                     print("User is signed in")
+                    self.receiptViewModel.lastReceipt = nil
                     self.receiptViewModel.getPastOrders(user : user)
                 }
-                self.firstLoad = false
-            }
+                
+            
         }
     }
     
