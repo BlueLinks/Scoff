@@ -155,6 +155,7 @@
 				936F654725BB385B00922F8E /* DietarySymbols.swift */,
 				93D639D525BF0479000A5EF7 /* RestaurantMapView.swift */,
 				93D639D925BF1123000A5EF7 /* MapView.swift */,
+				932BEF6A256C414B006ACD89 /* MenuSelectView.swift */,
 			);
 			path = RestaurantViews;
 			sourceTree = "<group>";
@@ -165,7 +166,6 @@
 				9355AF3625A35F0800E4A44E /* MenuCreationView.swift */,
 				9355AF3A25A388CE00E4A44E /* MenuEditView.swift */,
 				93F6E50B25A4C652002B7068 /* ItemEditView.swift */,
-				932BEF6A256C414B006ACD89 /* MenuSelectView.swift */,
 				93F6E51225A4DAD9002B7068 /* ExtraEditView.swift */,
 				936A2C9D25B5D547006409D0 /* IncomingOrdersView.swift */,
 			);
