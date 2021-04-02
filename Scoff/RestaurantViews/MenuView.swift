@@ -146,6 +146,7 @@ struct addItemToOrderView : View{
                     }
                 }
                 // Button for adding item with extra to Order TODO
+                Section{
                 Button( action: {
                     var listOfExtras : [extraRaw] = []
                     for extra in self.data{
@@ -159,19 +160,12 @@ struct addItemToOrderView : View{
                     self.order.items.append(orderItem(item: item, quantity: Int(orderAmount), extras: listOfExtras, notes: userNotes))
                     self.showing = false
                 }) {
-                    Section{
                         HStack{
-                            Spacer()
                             Text("Add \(orderAmount, specifier: "%.0f") to order")
-                                .frame(maxWidth: .infinity)
-                                .foregroundColor(.white)
-                                .padding(10)
-                                .background(Color.blue)
-                                .clipShape(Capsule())
-                            Spacer()
                         }
                     }
-                }
+                }.buttonStyle(formButtonStyle())
+                .listRowBackground(Color(.systemGroupedBackground))
             }
         }
         // On load get extras
@@ -226,7 +220,7 @@ class itemContainer : ObservableObject {
             unfilteredData = unfilteredData.filter{$0.vegan}
         }
         if glutenFreeSelected {
-            unfilteredData = unfilteredData.filter{$0.gluten}
+            unfilteredData = unfilteredData.filter{!$0.gluten}
         }
         return unfilteredData
     }
