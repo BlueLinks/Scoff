@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Track and Trace</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link
       type="text/css"
       rel="stylesheet"
@@ -14,21 +15,32 @@
       href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css"
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+      p {
+        color: white;
+      }
+    </style>
   </head>
-  <style>
-    fieldset {
-      background-color: rgb(96, 18, 155);
-    }
-    #error-message {
-      color: red;
-      height: 2em;
-    }
-  </style>
-  <body>
+  <body style="background-color:rgb(94, 24, 155);text-align:center">
+    <div class="jumbotron">
 
-    <p>Track and trace for</p>
-    <p id="name"></p>
+      <h1 class="display-4">Track and trace for</h1>
+    <h1 class="display-3" id="name"></h1>
+    <hr class="my-4">
+    <p style="color:gray">This is not a real track and trace form</p>
+  </div>
+    <br>
+    <div class="jumbotron">
+    <form>
+      <label for="fname">First name:</label>
+      <input type="text" id="fname" name="fname"><br><br>
+      <label for="lname">Last name:</label>
+      <input type="text" id="lname" name="lname"><br><br>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
 
+  
 
     <!-- Our application script -->
     <script src="/javascript/app.js"></script>
