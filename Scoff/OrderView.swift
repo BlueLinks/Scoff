@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Stripe
 import URLImage
 import Firebase
 

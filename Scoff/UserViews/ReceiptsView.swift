@@ -56,7 +56,8 @@ struct receipt : Identifiable {
         self.tableNumber = tableNumber
         self.dateTime = dateTime
         self.items = items
-        self.bill = items.lazy.map { $0.totalPrice}.reduce(0, +)
+        
+        self.bill = items.lazy.map { $0.totalPrice * Double($0.quantity) }.reduce(0, +)
     }
 }
 

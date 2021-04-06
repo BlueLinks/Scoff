@@ -72,7 +72,7 @@ struct SearchBar: View {
         self.data = []
         
         
-        var searchTerm = self.text.capitalizingFirstLetter()
+        let searchTerm = self.text.capitalizingFirstLetter()
         print(searchTerm)
         db.collection("restaurants").whereField("name", isGreaterThanOrEqualTo: searchTerm).getDocuments { (snap, err) in
             

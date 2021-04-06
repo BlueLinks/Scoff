@@ -29,7 +29,7 @@ struct RestaurantDetailsView: View {
     var body: some View {
         VStack{
             Form{
-                if  let user = session.session{
+                if  session.session != nil{
                     Section(header: Text("Restaurant details")){
                         HStack{
                             Text("Name:")

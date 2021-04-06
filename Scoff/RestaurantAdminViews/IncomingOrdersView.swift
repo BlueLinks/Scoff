@@ -166,7 +166,7 @@ struct IncomingOrdersView: View {
                             HStack{
                                 Text("\(item.quantity) * \(item.name)")
                                 Spacer()
-                                Text("£\(item.price, specifier: "%.2f")")
+                                Text("\(item.quantity) *  £\(item.price, specifier: "%.2f")")
                             }
                             if (item.extras.count > 0){
                                 // Show the extras that have been added to item
