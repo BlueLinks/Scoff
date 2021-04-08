@@ -4,12 +4,15 @@
 //
 //  Created by Scott Brown on 25/01/2021.
 //
+//  Resource used https://www.hackingwithswift.com/books/ios-swiftui/customizing-mkmapview-annotations
+//
 
 import Foundation
 import SwiftUI
 import UIKit
 import MapKit
 
+// Create wrapper
 struct MapView: UIViewRepresentable {
     
     @Binding var centerCoordinate: CLLocationCoordinate2D
@@ -17,10 +20,8 @@ struct MapView: UIViewRepresentable {
     @Binding var showingPlaceDetails: Bool
     var locationManager = CLLocationManager()
     
-    
-    
+    // Will hold all restaurant locations
     var annotations: [MKPointAnnotation]
-    
     
     func setupManager() {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -92,13 +93,6 @@ struct MapView: UIViewRepresentable {
         
     }
     
-//    struct MapView_Previews: PreviewProvider {
-//
-//
-//        static var previews: some View {
-//            MapView(centerCoordinate: .constant(MKPointAnnotation.example.coordinate), annotations: [MKPointAnnotation.example])
-//        }
-//    }
     
 }
 
@@ -106,7 +100,6 @@ extension MKPointAnnotation {
     static var example: MKPointAnnotation {
         let annotation = MKPointAnnotation()
         annotation.title = "Test Restaurant"
-//      annotation.subtitle = ""
         annotation.coordinate = CLLocationCoordinate2D(latitude: 51.5, longitude: -0.13)
         return annotation
     }

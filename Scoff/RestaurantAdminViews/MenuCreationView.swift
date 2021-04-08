@@ -10,6 +10,7 @@ import Firebase
 
 let db = Firestore.firestore()
 
+// Sheet displayed when user wishes to add new menu
 struct addNewMenuSheet: View {
     
     @EnvironmentObject var session: SessionStore
@@ -43,8 +44,10 @@ struct addNewMenuSheet: View {
     }
     
     func addMenu(name: String){
+        // attempt to add new menu
         if let user = session.session{
             var ref: DocumentReference? = nil
+            // add new document to firebase for menu
             ref = db.collection("restaurants").document(user.restaurantID!).collection("menus").addDocument(data: [
                 "name" : name,
                 "description" : description
@@ -53,7 +56,9 @@ struct addNewMenuSheet: View {
                 if let err = err {
                     print("Error adding menu: \(err)")
                 } else {
+                    // menu upload success
                     print("Menu added with ID: \(ref!.documentID)")
+                    // append this menu to data to display
                     data.append(menuRaw(id: ref!.documentID, name: name, description: description))
                     self.isPresented = false
                 }
@@ -77,6 +82,7 @@ struct MenuCreationView: View {
         
         Form{
             ForEach(self.data){ menu in
+                // show current menus
                 NavigationLink(destination: MenuEditView(menu: menu)){
                     Text("\(menu.name)")
                 }
@@ -90,16 +96,19 @@ struct MenuCreationView: View {
                     Text("Add menu")
                 }.foregroundColor(.blue)
             }.sheet(isPresented: $showingAddMenu){
+                // Show add menu sheet
                 addNewMenuSheet(data: $data, isPresented: self.$showingAddMenu)
             }
-            
+            // place edit button in navigation bar for menu deletion
             .navigationBarItems(trailing: EditButton())
             .navigationBarTitle("Edit Menus", displayMode: .inline)
         }.alert(isPresented:$deleteWarning){
+            // display warning to ensure user wishes to delete
             Alert(title: Text("Delete"), message: Text("Are you sure you want to delete \(nameToBeDeleted!)? This wil delete this menu along with all it's items and their extras."), primaryButton: .destructive(Text("Delete")){
+                // User wishes to delete
                 for row in self.toBeDeleted!{
-                    print("Deleting", self.data[row].name)
                     if let user = session.session{
+                        // delet menu in firebase
                         db.collection("restaurants").document(user.restaurantID!).collection("menus").document(self.data[row].id).delete { err in
                             if let err = err {
                                 print("Error removing menu: \(err)")
@@ -108,8 +117,10 @@ struct MenuCreationView: View {
                             }
                         }
                     }
+                    // delete menu in data array at its index
+                    print("Deleting", self.data[row].name)
                 }
-                    data.remove(atOffsets: self.toBeDeleted!)
+                data.remove(atOffsets: self.toBeDeleted!)
                 self.toBeDeleted = nil
 
             }, secondaryButton: .cancel(){
@@ -125,10 +136,13 @@ struct MenuCreationView: View {
     }
     
     func deleteMenu(at offsets: IndexSet) {
+        // delete menu
         for row in offsets{
+            // Get name of menu to show in alert
             self.nameToBeDeleted = self.data[row].name
         }
         self.toBeDeleted = offsets
+        // Show warning alert
         self.deleteWarning = true
     }
     

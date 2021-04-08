@@ -147,7 +147,6 @@
 				930EA17425A20B080014A15B /* SignUpView.swift */,
 				930EA18425A234F20014A15B /* UserDetailsView.swift */,
 				9348BDB625AE23DA00D14921 /* ImagePicker.swift */,
-				9355AF3325A3579300E4A44E /* RestaurantDetailsView.swift */,
 			);
 			path = UserViews;
 			sourceTree = "<group>";
@@ -159,11 +158,11 @@
 				931040C325642C1300D8428F /* RestaurantSelectView.swift */,
 				93AD6B7F25D03A8A007D3469 /* SearchBar.swift */,
 				936F654225BB15C300922F8E /* SafariView.swift */,
-				933E4AD5257E9E6D00353FA6 /* MenuView.swift */,
 				936F654725BB385B00922F8E /* DietarySymbols.swift */,
 				93D639D525BF0479000A5EF7 /* RestaurantMapView.swift */,
 				93D639D925BF1123000A5EF7 /* MapView.swift */,
 				932BEF6A256C414B006ACD89 /* MenuSelectView.swift */,
+				933E4AD5257E9E6D00353FA6 /* MenuView.swift */,
 			);
 			path = RestaurantViews;
 			sourceTree = "<group>";
@@ -171,6 +170,7 @@
 		93F6E50E25A4D207002B7068 /* RestaurantAdminViews */ = {
 			isa = PBXGroup;
 			children = (
+				9355AF3325A3579300E4A44E /* RestaurantDetailsView.swift */,
 				9355AF3625A35F0800E4A44E /* MenuCreationView.swift */,
 				9355AF3A25A388CE00E4A44E /* MenuEditView.swift */,
 				93F6E50B25A4C652002B7068 /* ItemEditView.swift */,

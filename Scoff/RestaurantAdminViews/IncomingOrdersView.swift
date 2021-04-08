@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 
+// Object used to retrieve and store incoming orders
 class IncomingOrderModel : ObservableObject {
     @Published var receipts = [receipt]()
     
@@ -18,6 +19,7 @@ class IncomingOrderModel : ObservableObject {
     
     
     func getPastOrders(user : User){
+        // Get previous orders and listen for new orders
         print("Attempting to download past orders for \(user.restaurantID!)")
         
         // Create dispatch group for each receipt
@@ -27,7 +29,7 @@ class IncomingOrderModel : ObservableObject {
         
         // get receipts
         orderRef.addSnapshotListener { (receiptList, err) in
-            print("SNAPSHOT UPDATED")
+            // Begin listening
             
             if err != nil{
                 // Error in receiving receipts
@@ -144,7 +146,6 @@ class IncomingOrderModel : ObservableObject {
     
 }
 
-
 struct IncomingOrdersView: View {
     
     @EnvironmentObject var session: SessionStore
@@ -195,6 +196,7 @@ struct IncomingOrdersView: View {
                 }
             }
             Button(action : {
+                // Attempt to manually check for more orders
                 if let user = session.session{
                     print("Get More button pressed")
                     incomingOrdersViewModel.receipts = []
@@ -212,6 +214,7 @@ struct IncomingOrdersView: View {
                 if let user = session.session{
                     incomingOrdersViewModel.receipts = []
                     print("User is signed in")
+                    // Begin listening for orders
                     self.incomingOrdersViewModel.getPastOrders(user : user)
                 }
                 self.firstLoad = false

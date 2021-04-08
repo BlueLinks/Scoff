@@ -67,7 +67,7 @@ struct MenuSelectView: View {
                             .clipped()
                     }
                     VStack{
-                        // show distance
+                        // show distance placeholder
                         HStack(spacing: 5){
                             Text("0.25km")
                                 .background(Color.gray)
@@ -87,7 +87,7 @@ struct MenuSelectView: View {
                         }
                         .padding(5)
                         HStack{
-                            // show rating
+                            // show rating placeholder
                             Text("⭐️ 3/5")
                                 .foregroundColor(.white)
                             Spacer()
@@ -119,6 +119,7 @@ struct MenuSelectView: View {
                 }.background(Color.black)
                 
                 .fullScreenCover(isPresented: $showSafariView) {
+                    // Show safari view for check in scotland form
                     SafariView(url: URL(string: self.url)!).edgesIgnoringSafeArea(.all)
                 }
                 

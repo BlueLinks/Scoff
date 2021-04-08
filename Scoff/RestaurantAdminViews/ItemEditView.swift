@@ -10,6 +10,7 @@ import Firebase
 import URLImage
 
 struct editItemSheet : View {
+    // View for editing details of item
     
     var menu : menuRaw
     @Binding var item : itemRaw
@@ -69,10 +70,12 @@ struct editItemSheet : View {
                     self.showingImagePicker = true
                 }){
                     HStack{
+                        // User can change image of item
                         Text("Select image")
                         Spacer()
                         if !imageSelected{
                             if item.image != ""{
+                                // Show current image
                                 URLImage(url: URL(string: item.image)!){ image in
                                     image
                                         .resizable()
@@ -80,6 +83,7 @@ struct editItemSheet : View {
                                 }
                             }
                         } else {
+                            // Show new selecred image
                             if imageToDisplay != nil {
                                 imageToDisplay?
                                     .resizable()
@@ -89,6 +93,7 @@ struct editItemSheet : View {
                         }
                     }.frame(height: 180)
                     .sheet(isPresented: $showingImagePicker, onDismiss: loadImage) {
+                        // Present image picker
                         ImagePicker(image: self.$inputImage)
                     }
                 }
@@ -101,6 +106,7 @@ struct editItemSheet : View {
                 Text("Save").bold()
             }.disabled(!detailsChanged))
         }.alert(isPresented:$showSaveWarn){
+            // Ensure user wishes to make changes
             Alert(title: Text("Save?"), message: Text("Are you sure you want to Save?"), primaryButton: .destructive(Text("Save")){
                 saveChanges()
             }, secondaryButton: .cancel())
@@ -116,6 +122,7 @@ struct editItemSheet : View {
     
     
     func loadImage() {
+        // Load selected image
         guard let inputImage = inputImage else { return }
         imageToDisplay = Image(uiImage: inputImage)
         image = inputImage
@@ -124,10 +131,12 @@ struct editItemSheet : View {
     }
     
     func saveChanges(){
+        // Save changes to item details
         print("Saving changes")
         
         if let user = session.session{
             var itemRef: DocumentReference? = nil
+            // Update details in firestore
             itemRef = db.collection("restaurants").document(user.restaurantID!).collection("menus").document(menu.id).collection("items").document(item.id)
             itemRef?.updateData([
                 "name" : self.name,
@@ -142,6 +151,7 @@ struct editItemSheet : View {
                 } else {
                     print("Menu updated with ID: \(itemRef!.documentID)")
                     if (imageSelected){
+                        // Upload selected image
                         uploadImage(docRef : itemRef!)
                     }
                     self.item.name = self.name
@@ -157,11 +167,13 @@ struct editItemSheet : View {
     
     
     func uploadImage(docRef : DocumentReference){
+        // upload selected item image
         let storage = Storage.storage()
         let storageRef = storage.reference()
         let splashRef = storageRef.child("restaurants/\(session.session!.restaurantID!)/\(docRef.documentID).jpg")
         let localImage = image!.jpegData(compressionQuality: 0.15)
         
+        // Begin upload task
         let uploadTask = splashRef.putData(localImage!, metadata: nil) { (metadata, error) in
             guard let metadata = metadata else {
                 // Uh-oh, an error occurred!
@@ -184,6 +196,7 @@ struct editItemSheet : View {
         }
         
         uploadTask.observe(.success) { snapshot in
+            // Upload task finsihed
             
             if session.session != nil{
                 splashRef.downloadURL{( url, error) in
@@ -191,6 +204,7 @@ struct editItemSheet : View {
                         print("ERROR")
                         return
                     }
+                    // update url for item image in firebase
                     let splashImageUrlString = downloadURL.absoluteString
                     print("download url is \(splashImageUrlString)")
                     print()
@@ -216,6 +230,7 @@ struct editItemSheet : View {
 
 
 struct addNewExtraSheet: View {
+    // View for adding new extra to item
     
     @EnvironmentObject var session: SessionStore
     @Binding var data: [extraRaw]
@@ -264,6 +279,7 @@ struct addNewExtraSheet: View {
     }
     
     func addExtra(name: String, price: Double, vegetarian: Bool, vegan : Bool, gluten : Bool){
+        // Upload extra data to firebase
         if let user = session.session{
             var ref: DocumentReference? = nil
             ref = db.collection("restaurants").document(user.restaurantID!).collection("menus").document(menu.id).collection("items").document(item.id).collection("extras").addDocument(data: [
@@ -308,6 +324,7 @@ struct ItemEditView: View {
             Form{
                 HStack{
                     Spacer()
+                    // Show image of item
                     URLImage(url: URL(string: item.image)!){ image in
                         image
                             .resizable()
@@ -345,6 +362,7 @@ struct ItemEditView: View {
                 Section{
                     HStack{
                         Button(action: {
+                            // Button to edit item details
                             print("Edit item Button pressed")
                             self.showEditItem = true
                         }){
@@ -352,6 +370,7 @@ struct ItemEditView: View {
                                 .font(.title)
                         }.buttonStyle(formButtonStyle())
                     }.sheet(isPresented: $showEditItem){
+                        // Show edit item sheet
                         editItemSheet(menu : menu, item: $item, isPresented: $showEditItem)
                     }
                 }
@@ -374,6 +393,7 @@ struct ItemEditView: View {
                         }.foregroundColor(.blue)
                     }
                     .sheet(isPresented: $showingAddExtra){
+                        // Show sheet to add new extra
                         addNewExtraSheet(data: $data, menu: menu, item: item, isPresented: self.$showingAddExtra)
                     }
                 }
@@ -381,10 +401,13 @@ struct ItemEditView: View {
             Spacer()
         }
         .alert(isPresented:$deleteWarning){
+            // Ensure user wishes to delete extra
             Alert(title: Text("Delete"), message: Text("Are you sure you want to delete \(nameToBeDeleted!)? This will delete this extra"), primaryButton: .destructive(Text("Delete")){
+                // User wishes to delete extra
                 for row in self.toBeDeleted!{
                     print("Deleting", self.data[row].name)
                     if let user = session.session{
+                        // remove extra from firebase
                         db.collection("restaurants").document(user.restaurantID!).collection("menus").document(menu.id).collection("items").document(item.id).collection("extras").document(self.data[row].id).delete { err in
                             if let err = err {
                                 print("Error removing extra: \(err)")
@@ -394,10 +417,12 @@ struct ItemEditView: View {
                         }
                     }
                 }
+                // remove extra from local data array
                 data.remove(atOffsets: self.toBeDeleted!)
                 self.toBeDeleted = nil
                 
             }, secondaryButton: .cancel(){
+                // User does not wish to delete
                 self.toBeDeleted = nil
             }
             )
@@ -414,6 +439,7 @@ struct ItemEditView: View {
     }
     
     func deleteExtra(at offsets: IndexSet) {
+        // Get index to delete extra at
         for row in offsets{
             self.nameToBeDeleted = self.data[row].name
         }

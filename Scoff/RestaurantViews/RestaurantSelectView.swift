@@ -30,6 +30,7 @@ struct restaurantCardView : View {
                     
                     Spacer()
                     
+                    // Show restaurant splash image
                     URLImage(url: URL(string: restaurant.picture)!){ image in
                         image
                             .resizable()
@@ -90,7 +91,7 @@ struct RestaurantSelectView: View {
                         }){
                             HStack{
                                 Spacer()
-                            Text("Get More").blueButtonStyle()
+                                Text("Get More").blueButtonStyle()
                                 Spacer()
                             }
                         }
@@ -101,7 +102,6 @@ struct RestaurantSelectView: View {
                 VStack{
                     List{
                         ForEach(self.searchData){ i in
-                            
                             restaurantCardView(restaurant: i)
                         }
                     }
@@ -115,6 +115,7 @@ struct RestaurantSelectView: View {
         }
         .navigationBarTitle("Select")
         .navigationBarItems(trailing:
+                                // Show button to map view
                                 Button(action: {
                                     print("Map button pressed \(self.mapIsActive)")
                                     self.mapIsActive = true
@@ -125,6 +126,8 @@ struct RestaurantSelectView: View {
         .onAppear(){
             mapIsActive = false
             if firstLoad{
+                // When view is first loaded get the inital data
+                // This check is performed as this closure will execute when navigating back from a restaurant
                 self.getFirstData()
                 self.firstLoad = false
             }
@@ -135,20 +138,21 @@ struct RestaurantSelectView: View {
     
     
     func getFirstData() {
+        // Get initial data
+        // Limited to 5 restaurants to show how more documents could be retrived
         db.collection("restaurants").order(by: "name").limit(to: 5).getDocuments { (snap, err) in
             
             getData(snap: snap, err: err)
-            
         }
     }
     
     
     func UpdateData() {
-        
+        // Get more data by specifying last retrieved document
+        // Limited to 5 restaurants to show how more documents could be retrived
         db.collection("restaurants").order(by: "name").limit(to: 5).start(afterDocument: self.lastDoc).limit(to: 5).getDocuments { (snap, err) in
             
             getData(snap: snap, err: err)
-            
         }
     }
     
@@ -160,17 +164,21 @@ struct RestaurantSelectView: View {
         }
         
         for newRestaurant in snap!.documents{
-             
+            // Loop through retrived restaurants
+            
+            // Convert firebase data type to swift
             let coords = newRestaurant.get("location") as! GeoPoint
             let lat = coords.latitude
             let lon = coords.longitude
             let data = restaurantRaw(id: newRestaurant.documentID, name: newRestaurant.get("name") as! String, picture: newRestaurant.get("splash_image") as! String, location: CLLocationCoordinate2D(latitude: lat,longitude: lon), email: newRestaurant.get("email") as! String)
             
+            // Appened restaurant to array
             self.data.append(data)
         }
         
         if let lastDoc = snap!.documents.last{
             if !(snap!.documents.count < 5) {
+                // Assumed that if less than 5 documents are retrived then there are more restaurants
                 self.showFindMoreButton = true
             }
             self.lastDoc = lastDoc

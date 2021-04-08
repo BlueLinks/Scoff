@@ -20,7 +20,6 @@ struct SignUpView : View {
     @State var vegan : Bool = false
     @State var password: String = ""
     @State var confirmPassword: String = ""
-    @State var loading = false
     @State var error = false
     @State var errorText = ""
     @State var passwordMatchAlert = false
@@ -31,21 +30,24 @@ struct SignUpView : View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     
     func getUser () {
+        // Get user session
         session.listen()
         if (session.session != nil) {
+            // return from view
             self.mode.wrappedValue.dismiss()
         }
     }
     
     func signUp () {
-        loading = true
         error = false
+        // attempt to create new account
         session.signUp(email: email, password: password) { (result, error) in
-            self.loading = false
             if error != nil {
                 self.errorText = error!.localizedDescription
                 self.error = true
             } else {
+                // new account successfully created
+                // upload account details to cloud firestore
                 db.collection("users").document(result!.user.uid).setData([
                     "firstName" : self.firstName,
                     "lastName" : self.lastName,
@@ -59,6 +61,7 @@ struct SignUpView : View {
                         print("Error writing document: \(err)")
                     } else {
                         print("Document successfully written!")
+                        // Clear fields in form
                         self.email = ""
                         self.password = ""
                         getUser()
@@ -83,12 +86,14 @@ struct SignUpView : View {
                 SecureField("Confirm Password", text: $confirmPassword)
             }
             if (error) {
+                // Show error for incorrect details
                 Text(self.errorText)
             }
             Button(action: {
                 if password == confirmPassword{
                     signUp()
                 } else {
+                    // Passwords do not match
                     passwordMatchAlert = true
                 }
             }) {
@@ -101,6 +106,7 @@ struct SignUpView : View {
                 
             }
         }.alert(isPresented: $passwordMatchAlert) {
+            // Alert when passwords do not match
             Alert(title: Text("Confirm Password"), message: Text("Passwords do not match!"), dismissButton: .default(Text("OK")))
         }
         .navigationTitle("Sign Up")

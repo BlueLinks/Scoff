@@ -8,20 +8,14 @@
 import Foundation
 import SwiftUI
 
+// extension used for custom defined colour
 extension Color {
+    // Used for vegetarian symbol
     static let darkGreen = Color("darkGreen")
 }
 
 struct vegetarianSymbol : View {
     var body: some View {
-        //        ZStack {
-        //            Circle()
-        //                .fill(Color.green)
-        //                .frame(width: 30)
-        //
-        //            Text("VEG")
-        //                .foregroundColor(.white)
-        //        }
         Text("VEG")
             .font(.caption)
             .foregroundColor(.white)
@@ -66,6 +60,8 @@ struct userDietSymbol : View {
 }
 
 struct dietaryItemSymbolsView : View {
+    // View will show dietary symbols given an item
+    
     var item : itemRaw
     
     var body : some View {
@@ -84,6 +80,7 @@ struct dietaryItemSymbolsView : View {
 }
 
 struct dietaryExtraSymbolsView : View {
+    // View will show dietary symbols given an item extra
     var extra : extraRaw
     
     var body : some View {

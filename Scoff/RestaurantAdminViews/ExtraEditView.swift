@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 
 struct editExtraSheet: View {
+    // View to edit extra details
     
     var menu : menuRaw
     var item: itemRaw
@@ -62,11 +63,15 @@ struct editExtraSheet: View {
                 }
             }.navigationBarTitle(Text("Edit Extra"))
             .navigationBarItems(trailing: Button(action: {
+                // Present save alert
                 showSaveWarn = true
             }) {
                 Text("Save").bold()
             }.disabled(!detailsChanged))
+            // Save button is disabled if no changes have been made
+            
         }.alert(isPresented:$showSaveWarn){
+            // Ensure user wishes to save changes
             Alert(title: Text("Save?"), message: Text("Are you sure you want to Save?"), primaryButton: .destructive(Text("Save")){
                 doublePrice = Double(price)!
                 saveChanges()
@@ -82,10 +87,12 @@ struct editExtraSheet: View {
     }
     
     func saveChanges(){
+        // Save changes to firebase and local copy
         print("Saving changes")
         
         if let user = session.session{
             var extraRef: DocumentReference? = nil
+            // Update details in firebase
             extraRef = db.collection("restaurants").document(user.restaurantID!).collection("menus").document(menu.id).collection("items").document(item.id).collection("extras").document(extra.id)
             extraRef?.updateData([
                 "name" : self.name,
@@ -99,6 +106,7 @@ struct editExtraSheet: View {
                     print("Error updating extra: \(err)")
                 } else {
                     print("Extra updated with ID: \(extraRef!.documentID)")
+                    // update local copy
                     self.extra.name = self.name
                     self.extra.price = self.doublePrice
                     self.extra.gluten = self.gluten
@@ -113,6 +121,7 @@ struct editExtraSheet: View {
 }
 
 struct ExtraEditView: View {
+    // View showing extra details
     
     var menu : menuRaw
     var item : itemRaw
@@ -153,12 +162,14 @@ struct ExtraEditView: View {
                 HStack{
                     Button(action: {
                         print("Edit extra Button pressed")
+                        // Show sheet for editing extra details
                         self.showEditExtra = true
                     }){
                         Text("Edit Extra")
                             .font(.title)
                     }.buttonStyle(formButtonStyle())
                 }.sheet(isPresented: $showEditExtra){
+                    // present extra edit sheet
                     editExtraSheet(menu : menu, item: item, extra: $extra, isPresented: $showEditExtra)
                 }
             }

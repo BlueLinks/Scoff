@@ -152,6 +152,7 @@ struct extraRaw : Identifiable {
     var gluten : Bool = false
 }
 
+// Object for storing items as part of an order
 struct orderItem : Identifiable {
     var id = UUID()
     var quantity : Int
@@ -169,6 +170,7 @@ struct orderItem : Identifiable {
     }
 }
 
+// Object used to store order
 class Order: ObservableObject {
     @Published var id = UUID()
     @Published var orderTime : Date?
@@ -216,7 +218,6 @@ struct ScoffApp: App {
         // For top naviagtion bar
         UINavigationBar.appearance().barTintColor = .white
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
-        
         
         
     }

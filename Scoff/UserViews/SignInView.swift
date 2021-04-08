@@ -24,10 +24,12 @@ struct SignInView : View {
     @Binding var showView : Bool
     
     func getUser () {
+        // Get user session
         session.listen()
         if (session.session != nil) {
             print("Signing in")
             authenticated = true
+            // Return from view
             self.showView = false
         }
         
@@ -35,6 +37,7 @@ struct SignInView : View {
     }
     
     func signIn () {
+        // Sign in user
         loading = true
         error = ""
         session.signIn(email: email, password: password) { (result, error) in
@@ -48,7 +51,9 @@ struct SignInView : View {
                     if let err = err {
                         print("Error accessing document: \(err)")
                     } else {
+                        // User authorised
                         print("Document successfully accessed!")
+                        // Clear fields in form
                         self.email = ""
                         self.password = ""
                         getUser()

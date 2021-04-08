@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 
+// Sheet used to edit menu details
 struct editMenuSheet: View {
     
     @Binding var menu : menuRaw
@@ -16,6 +17,7 @@ struct editMenuSheet: View {
     let db = Firestore.firestore()
     @State var name : String = ""
     @State var description : String = ""
+    // Used to track if details have changed to show save button
     @State var detailsChanged : Bool = false
     @State var showSaveWarn : Bool = false
     
@@ -24,35 +26,40 @@ struct editMenuSheet: View {
             Form{
                 HStack{
                     Text("Name:")
-                TextField("",text: $name).onChange(of: name, perform: { (value) in
-                    if !(value == menu.name){
-                        print("name changed to \(value)")
-                        detailsChanged = true
-                    } else {
-                        detailsChanged = false
-                    }
-                
-                })
+                    TextField("",text: $name).onChange(of: name, perform: { (value) in
+                        if !(value == menu.name){
+                            print("name changed to \(value)")
+                            detailsChanged = true
+                        } else {
+                            detailsChanged = false
+                        }
+                        
+                    })
                 }
+                
                 HStack{
                     Text("Description:")
-                TextField("",text: $description).onChange(of: description, perform: { (value) in
-                    if !(value == menu.description){
-                        print("description changed to \(value)")
-                        detailsChanged = true
-                    } else {
-                        detailsChanged = false
-                    }
-                })
+                    TextField("",text: $description).onChange(of: description, perform: { (value) in
+                        if !(value == menu.description){
+                            print("description changed to \(value)")
+                            detailsChanged = true
+                        } else {
+                            detailsChanged = false
+                        }
+                    })
                 }
             }.navigationBarTitle(Text("Edit Menu"))
             .navigationBarItems(trailing: Button(action: {
+                // When save button is tapped, show save warning
                 showSaveWarn = true
             }) {
                 Text("Save").bold()
             }.disabled(!detailsChanged))
+            // Save button is disabled when details have not changed
+            
         }.alert(isPresented:$showSaveWarn){
             Alert(title: Text("Save?"), message: Text("Are you sure you want to Save?"), primaryButton: .destructive(Text("Save")){
+                // User confirms
                 saveChanges()
             }, secondaryButton: .cancel())
         }
@@ -63,6 +70,7 @@ struct editMenuSheet: View {
     }
     
     func saveChanges(){
+        // Save changes to firebase
         print("Saving changes")
         
         if let user = session.session{
@@ -87,7 +95,7 @@ struct editMenuSheet: View {
     
 }
 
-
+// Sheet used to add new item
 struct addNewItemSheet: View {
     
     @EnvironmentObject var session: SessionStore
@@ -134,15 +142,19 @@ struct addNewItemSheet: View {
                     HStack{
                         Text("Select an image")
                         if imageToDisplay != nil {
+                            // Display selected image
                             imageToDisplay?
                                 .resizable()
                                 .scaledToFit()
                         }
                     }
                 }.sheet(isPresented: $showingImagePicker, onDismiss: loadImage) {
+                    // Show image picker
                     ImagePicker(image: self.$inputImage)
                 }
                 Button(action: {
+                    // Keyboard type for price is decimal pad
+                    // therefore assumed safe to convert type
                     doublePrice = Double(price)!
                     addItem()
                     
@@ -163,6 +175,7 @@ struct addNewItemSheet: View {
     }
     
     func addItem(){
+        // Add item to firebase
         if let user = session.session{
             var ref: DocumentReference? = nil
             ref = db.collection("restaurants").document(user.restaurantID!).collection("menus").document(menu.id).collection("items").addDocument(data: [
@@ -186,6 +199,7 @@ struct addNewItemSheet: View {
     
     
     func loadImage() {
+        // Load selected image
         guard let inputImage = inputImage else { return }
         imageToDisplay = Image(uiImage: inputImage)
         image = inputImage
@@ -193,11 +207,13 @@ struct addNewItemSheet: View {
     }
     
     func uploadImage(docRef : DocumentReference){
+        // Upload selected image to firebase
         let storage = Storage.storage()
         let storageRef = storage.reference()
         let splashRef = storageRef.child("restaurants/\(session.session!.restaurantID!)/\(docRef.documentID).jpg")
         let localImage = image!.jpegData(compressionQuality: 0.15)
         
+        // Start image upload
         let uploadTask = splashRef.putData(localImage!, metadata: nil) { (metadata, error) in
             guard let metadata = metadata else {
                 // Uh-oh, an error occurred!
@@ -232,6 +248,7 @@ struct addNewItemSheet: View {
         }
         
         uploadTask.observe(.success) { snapshot in
+            // upload task finished
             showUploadProgress = false
             
             if session.session != nil{
@@ -242,7 +259,7 @@ struct addNewItemSheet: View {
                     }
                     let splashImageUrlString = downloadURL.absoluteString
                     print("download url is \(splashImageUrlString)")
-                    print()
+                    // update image url in firestore
                     docRef.updateData([
                         "image" : splashImageUrlString
                     ]){ err in
@@ -312,6 +329,7 @@ struct MenuEditView: View {
                                 .font(.title)
                         }.buttonStyle(formButtonStyle())
                     }.sheet(isPresented: $showEditMenu){
+                        // Show edit menu sheet
                         editMenuSheet(menu: $menu, isPresented: $showEditMenu)
                     }
                 }
@@ -334,6 +352,7 @@ struct MenuEditView: View {
                         }.foregroundColor(.blue)
                     }
                     .sheet(isPresented: $showingAddItem){
+                        // Show add item sheet
                         addNewItemSheet(data: $data, menu: menu, isPresented: self.$showingAddItem)
                     }
                 }
@@ -341,12 +360,14 @@ struct MenuEditView: View {
             Spacer()
         }
         .alert(isPresented:$deleteWarning){
+            // Ensure user wishes to delete item and its extras
             Alert(title: Text("Delete"), message: Text("Are you sure you want to delete \(nameToBeDeleted!)? This will delete this item and all of it's extras."), primaryButton: .destructive(Text("Delete")){
                 for row in self.toBeDeleted!{
                     // Deleting item
                     print("Deleting", self.data[row].name)
                     if let user = session.session{
                         let itemID = self.data[row].id
+                       // delet item from firebase
                         db.collection("restaurants").document(user.restaurantID!).collection("menus").document(menu.id).collection("items").document(itemID).delete { err in
                             if let err = err {
                                 print("Error removing item: \(err)")
@@ -356,6 +377,7 @@ struct MenuEditView: View {
                         }
                         let storage = Storage.storage()
                         let storageRef = storage.reference()
+                        // delete image in firebase
                         storageRef.child("restaurants/\(user.restaurantID!)/\(itemID).jpg").delete { err in
                             if let err = err {
                                 print("Error in removing item splash image : \(err)")
@@ -372,6 +394,7 @@ struct MenuEditView: View {
                 self.toBeDeleted = nil
                 
             }, secondaryButton: .cancel(){
+                // User wishes to cancel delete
                 self.toBeDeleted = nil
             }
             )
@@ -386,6 +409,7 @@ struct MenuEditView: View {
     }
     
     func deleteItem(at offsets: IndexSet) {
+        // Get index at which to delete menu from data array
         for row in offsets{
             self.nameToBeDeleted = self.data[row].name
         }

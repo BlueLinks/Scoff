@@ -5,6 +5,7 @@
 //  Created by Scott Brown on 07/02/2021.
 //  Resource used https://www.appcoda.com/swiftui-search-bar/
 //
+
 import SwiftUI
 import Firebase
 import MapKit
@@ -16,6 +17,7 @@ struct SearchBar: View {
     @Binding var data : [restaurantRaw]
     
     var isEditing : Bool {
+        // Has user entered search term
         if text.isEmpty {
             return false
         } else {
@@ -57,6 +59,7 @@ struct SearchBar: View {
             if isEditing {
                 // Button for user to search
                 Button(action: {
+                    // Button is used to search to reduce number of queries to firebase and therefore reduce monetary costs
                     getQuiredData()
                 }) {
                     Text("Search")
@@ -69,11 +72,15 @@ struct SearchBar: View {
     }
     
     func getQuiredData() {
+        // Get quried restaurants
         self.data = []
         
-        
+        // Limitation for firestore search in swift
+        // Can only query for prefix in string field
+        // Capitalise first letter to ensure match
         let searchTerm = self.text.capitalizingFirstLetter()
         print(searchTerm)
+        // Perform query
         db.collection("restaurants").whereField("name", isGreaterThanOrEqualTo: searchTerm).getDocuments { (snap, err) in
             
             
@@ -84,14 +91,16 @@ struct SearchBar: View {
             
             for newRestaurant in snap!.documents{
                 
-                // As the firebase query will get all documents after the query
+                // As the firebase query will get all documents after the query, match or not
                 if (newRestaurant.get("name") as! String).contains(searchTerm){
                     
+                    // Convert firebase data type to swift
                     let coords = newRestaurant.get("location") as! GeoPoint
                     let lat = coords.latitude
                     let lon = coords.longitude
                     let data = restaurantRaw(id: newRestaurant.documentID, name: newRestaurant.get("name") as! String, picture: newRestaurant.get("splash_image") as! String, location: CLLocationCoordinate2D(latitude: lat,longitude: lon), email: newRestaurant.get("email") as! String)
                     
+                    // Appened restaurant to array
                     self.data.append(data)
                 }
             }

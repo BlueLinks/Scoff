@@ -16,13 +16,13 @@ struct UserView : View {
     @EnvironmentObject var session: SessionStore
     
     
-    
     @State var showSignIn : Bool = true
     @State var signOutWarn = false
     @State var authenticated = false
     @State var showingSignInView = false
     
     func getUser () {
+        // Check if user is signed in
         if (session.session != nil) {
             showSignIn = false
         }
@@ -32,7 +32,9 @@ struct UserView : View {
         NavigationView {
             VStack{
                 if (showSignIn){
+                    // User is not signed in therefore show buttons to sign in / sign up
                     VStack{
+                        // Sign In
                         NavigationLink(destination: SignInView(authenticated: $authenticated, showView: $showingSignInView), isActive : $showingSignInView) {
                             Text("Sign In")
                         }                        .font(.title)
@@ -40,6 +42,8 @@ struct UserView : View {
                         .background(Color.blue)
                         .clipShape(Capsule())
                         .foregroundColor(.white)
+                        
+                        // Sign up
                         NavigationLink(destination: SignUpView()) {
                             Text("Sign Up")
                         }                        .font(.title)
@@ -49,6 +53,7 @@ struct UserView : View {
                         .foregroundColor(.white)
                     }
                 } else {
+                    // User is Signed in
                     Form{
                         // Check if user is restaurant admin
                         if (session.session?.restaurantID == nil){
@@ -57,7 +62,6 @@ struct UserView : View {
                                 Image(systemName: "person")
                                 Text("User Details")
                             }
-                        
                         
                         NavigationLink(destination: ReceiptsView()){
                             Image(systemName: "folder")
@@ -85,7 +89,9 @@ struct UserView : View {
                         }){
                             Text("Sign out")
                         }.alert(isPresented:$signOutWarn){
+                            // Warning to ensure user wishes to sign out
                             Alert(title: Text("Sign Out"), message: Text("Are you sure you want to sign out?"), primaryButton: .destructive(Text("Sign Out")){
+                                // User wishes to sign out
                                 print("Logged out?" , session.signOut())
                                 session.session = nil
                                 showSignIn = true
@@ -95,6 +101,7 @@ struct UserView : View {
                     }
                 }
             }.onAppear(perform: getUser)
+            // When the view is loaded, check if user is signed in
             .navigationBarTitle("User")
         }
     }

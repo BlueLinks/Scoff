@@ -35,6 +35,7 @@ struct itemCardView : View {
                 }.padding(10)
                 Spacer()
                 
+                // Show item image
                 URLImage(url: URL(string: item.image)!){ image in
                     image
                         .resizable()
@@ -54,13 +55,17 @@ struct itemCardView : View {
 // View displayed as sheet to add item to order
 struct addItemToOrderView : View{
     
+    @EnvironmentObject var order : Order
+    
     var item : itemRaw
     @Binding var showing : Bool
     var itemsRef : CollectionReference
     @State var data : [extraRaw] = []
     @State var userNotes = ""
     @State var orderAmount = 1.00
+    
     var extrasPrice : Double {
+        // Calculate total price of extras
         var totalExtrasPrice : Double = 0
         for extra in self.data{
             if extra.extraSelected {
@@ -70,17 +75,18 @@ struct addItemToOrderView : View{
         }
         return totalExtrasPrice
     }
+    
     var priceheaderText : String {
+        // This is used to give feedback that the total price is including the price of the extras
         for extra in self.data{
             if extra.extraSelected {
+                // If an extra has been selected
                 return "with extras"
             }
         }
         return ""
         
     }
-    
-    @EnvironmentObject var order : Order
     
     
     var body : some View{
@@ -121,6 +127,7 @@ struct addItemToOrderView : View{
                         
                         // Display Extras
                         ForEach(data.indices) { index in
+                            // Use extraSelected field to keep track of each selected extra
                             Toggle(isOn: self.$data[index].extraSelected) {
                                 HStack{
                                     // Show extra name and price
@@ -145,7 +152,7 @@ struct addItemToOrderView : View{
                         Stepper("£\(orderAmount * (item.price + extrasPrice), specifier: "%.2f")", value: $orderAmount, in: 1...10)
                     }
                 }
-                // Button for adding item with extra to Order TODO
+                // Button for adding item with extra to Order
                 Section{
                 Button( action: {
                     var listOfExtras : [extraRaw] = []
@@ -154,9 +161,11 @@ struct addItemToOrderView : View{
                             listOfExtras.append(extra)
                         }
                         for index in 0..<data.count{
+                            // reset extra selected field in all extras
                             data[index].extraSelected = false
                         }
                     }
+                    //Append item to order
                     self.order.items.append(orderItem(item: item, quantity: Int(orderAmount), extras: listOfExtras, notes: userNotes))
                     self.showing = false
                 }) {
@@ -200,9 +209,10 @@ struct addItemToOrderView : View{
     
 }
 
-
+// Object used to store all items
 class itemContainer : ObservableObject {
     
+    // Track selected dietary filters
     @Published var vegetarianSelected = false
     @Published var veganSelected = false
     @Published var glutenFreeSelected = false
@@ -211,6 +221,7 @@ class itemContainer : ObservableObject {
     let db = Firestore.firestore()
     @Published var data : [itemRaw] = []
     
+    // Filter data
     var filteredData : [itemRaw] {
         var unfilteredData = self.data
         if vegetarianSelected {
@@ -222,6 +233,7 @@ class itemContainer : ObservableObject {
         if glutenFreeSelected {
             unfilteredData = unfilteredData.filter{!$0.gluten}
         }
+        // if no filter selcted, unfilteredData will hold all data
         return unfilteredData
     }
     
@@ -265,12 +277,15 @@ struct MenuView: View {
         let itemsRef = db.collection("restaurants").document(restaurantID).collection("menus").document(menu.id).collection("items")
         
         ScrollView(.vertical){
+
             HStack{
+                // Show dietary filters
                 Button(action: {
                     self.data.vegetarianSelected.toggle()
                     self.data.userDietSelected = false
                     print("Vegetarian filter selected")
                 }){
+                    // saturation used to indicate filter selected
                     vegetarianSymbol().saturation(self.data.vegetarianSelected ? 1.0 : 0)
                 }
                 Button(action: {
@@ -288,6 +303,7 @@ struct MenuView: View {
                     glutenFreeSymbol().saturation(self.data.glutenFreeSelected ? 1.0 : 0)
                 }
                 if let user = session.session{
+                    // if user is signed in, show button to filter by account requirments
                     HStack{
                         Button(action: {
                             print("User diet selected")
@@ -307,6 +323,7 @@ struct MenuView: View {
                     }
                 }
             }
+            
             VStack(spacing: 0){
                 ForEach(self.data.filteredData){ item in
                     Divider()

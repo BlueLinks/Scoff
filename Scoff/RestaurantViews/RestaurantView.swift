@@ -9,24 +9,21 @@ import SwiftUI
 
 
 struct RestaurantView: View {
+    // First view a user will see when opening Scoff for first time
     
-    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var session: SessionStore
     
     var body: some View {
         NavigationView{
             
             ZStack {
-                
-                
+                // Show splash image behind ui components
                 Image("Splash")
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)
-                
+
                 VStack{
-                    
-                    
                     Text("Scoff")
                         .font(.largeTitle)
                         .foregroundColor(.white)
@@ -48,15 +45,7 @@ struct RestaurantView: View {
         }
     }
     
-    init() {
-//        UINavigationBar.appearance().backgroundColor = .black
-//        if colorScheme == .dark {
-//            UINavigationBar.appearance().backgroundColor = .black
-//        } else {
-//            UINavigationBar.appearance().backgroundColor = .white
-//        }
-    }
-    
+
     struct RestaurantView_Previews: PreviewProvider {
         static var previews: some View {
             RestaurantView()

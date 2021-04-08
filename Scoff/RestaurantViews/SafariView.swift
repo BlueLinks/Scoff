@@ -10,9 +10,11 @@
 import SafariServices
 import SwiftUI
 
+// Create wrapper
 struct SafariView: UIViewControllerRepresentable {
     var url: URL
         
+    // Called when view is created
     func makeUIViewController(context: UIViewControllerRepresentableContext<SafariView>) -> SFSafariViewController {
         let safariView = SFSafariViewController(url: url)
         return safariView

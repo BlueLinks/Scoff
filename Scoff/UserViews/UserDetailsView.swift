@@ -1,3 +1,4 @@
+
 //
 //  UserDetailsView.swift
 //  Scoff
@@ -13,40 +14,43 @@ struct changeEmailSheet: View {
     @Binding var isPresented: Bool
     @State var reauthenticated = false
     @State var showingSignInView = false
-    @State var oldEmail = ""
     @State var email = ""
     @State var emailChanged = false
     
     var body: some View{
         NavigationView{
             VStack{
+                // User will need to reauth
                 if (!reauthenticated){
                     SignInView(authenticated: $reauthenticated, showView: $showingSignInView)
                     
                 } else {
+                    // Present UI to change email
                     Text("Re-authenticated!")
                     Text("Old Email: \(session.session!.email!)")
                     HStack{
                         Text("New Email:")
                         Spacer()
                         TextField("",text: $email).keyboardType(/*@START_MENU_TOKEN@*/.emailAddress/*@END_MENU_TOKEN@*/).onChange(of: email, perform: { (value) in
-                                                                                                                                    print("Email changed to \(value)")
-                                                                                                                                    emailChanged = true                        })
+                                                                                    print("Email changed to \(value)")
+                                                                                    emailChanged = true
+                        })
                     }
                     Button(action: {
                         saveNewEmail()
                     }) {
+                        // Show save button when email has changed
                         Text("Save").bold()
                     }.disabled(!emailChanged)
                 }
             }.navigationTitle("Change email")
         }.onAppear(){
-            self.oldEmail = session.session!.email!
             self.email = session.session!.email!
         }
     }
     
     func saveNewEmail(){
+        // Save new email for firebase auth
         print("Attempting to save new email")
         Auth.auth().currentUser?.updateEmail(to: email) { err in
             if let err = err {
@@ -57,6 +61,7 @@ struct changeEmailSheet: View {
                 isPresented = false
             }
         }
+        // Update email in cloud firestore
         print("Attempting to save changes to user details")
         if let user = session.session {
             let userRef = db.collection("users").document(user.uid)
@@ -86,17 +91,20 @@ struct changePasswordSheet: View {
     var body: some View{
         NavigationView{
             VStack{
+                // User will need to reauth
                 if (!reauthenticated){
                     SignInView(authenticated: $reauthenticated, showView: $showingSignInView)
                     
                 } else {
+                    // Present UI to change password
                     Text("Re-authenticated!")
                     HStack{
                         Text("New Password:")
                         Spacer()
                         SecureField("Password", text: $password).onChange(of: password, perform: { (value) in
-                                                                            print("Password Changed")
-                                                                            passwordChanged = true                        })
+                            print("Password Changed")
+                            passwordChanged = true
+                        })
                     }
                     HStack{
                         Text("Confirm New Password:")
@@ -111,6 +119,7 @@ struct changePasswordSheet: View {
                         if password == confirmPassword {
                             saveNewPassword()
                         } else {
+                            // Passwords do not match, show alert
                             passwordMatchAlert = true
                         }
                     }) {
@@ -150,6 +159,7 @@ struct UserDetailsView: View {
     @State var vegetarian = false
     @State var vegan = false
     
+    // Used to track when details have changed so save button can be shown
     @State var detailsChanged = false
     
     @State var showSaveWarn = false
@@ -159,82 +169,82 @@ struct UserDetailsView: View {
     var body: some View {
         if let user = session.session{
             
-                Form{
-                    HStack{
-                        Text("First Name:")
-                        Spacer()
-                        TextField("",text: $firstName).onChange(of: firstName, perform: { (value) in
-                            print("firstName changed to \(value)")
-                            detailsChanged = true
-                        })
+            Form{
+                HStack{
+                    Text("First Name:")
+                    Spacer()
+                    TextField("",text: $firstName).onChange(of: firstName, perform: { (value) in
+                        print("firstName changed to \(value)")
+                        detailsChanged = true
+                    })
+                }
+                HStack{
+                    Text("Last Name:")
+                    Spacer()
+                    TextField("",text: $lastName).onChange(of: lastName, perform: { (value) in
+                        print("lastName changed to \(value)")
+                        detailsChanged = true
+                    })
+                }
+                HStack{
+                    Text("Email:")
+                    Spacer()
+                    TextField("",text: $email).keyboardType(/*@START_MENU_TOKEN@*/.emailAddress/*@END_MENU_TOKEN@*/).onChange(of: email, perform: { (value) in
+                        print("Email changed to \(value)")
+                        detailsChanged = true
+                    })
+                }
+                HStack{
+                    DatePicker("Date Of Birth", selection: $dateOfBirth, displayedComponents: .date).onChange(of: dateOfBirth, perform: { (value) in
+                        print("dateOfBirth changed to \(value)")
+                        detailsChanged = true
+                    })
+                }
+                HStack{
+                    Toggle("Coeliac Disease?", isOn: $coeliac).onChange(of: coeliac, perform: { (value) in
+                        print("Coeliac changed to \(value)")
+                        detailsChanged = true
+                    })
+                }
+                HStack{
+                    Toggle("Vegetarian", isOn: $vegetarian).onChange(of: vegetarian, perform: { (value) in
+                        print("Vegetarian changed to \(value)")
+                        detailsChanged = true
+                    })
+                }
+                HStack{
+                    Toggle("Vegan", isOn: $vegan).onChange(of: vegan, perform: { (value) in
+                        print("Vegan changed to \(value)")
+                        detailsChanged = true
+                    })
+                }
+                HStack{
+                    Button(action: {
+                        showChangeEmailSheet = true
+                    }){
+                        Text("Change email")
                     }
-                    HStack{
-                        Text("Last Name:")
-                        Spacer()
-                        TextField("",text: $lastName).onChange(of: lastName, perform: { (value) in
-                            print("lastName changed to \(value)")
-                            detailsChanged = true
-                        })
-                    }
-                    HStack{
-                        Text("Email:")
-                        Spacer()
-                        TextField("",text: $email).keyboardType(/*@START_MENU_TOKEN@*/.emailAddress/*@END_MENU_TOKEN@*/).onChange(of: email, perform: { (value) in
-                            print("Email changed to \(value)")
-                            detailsChanged = true
-                        })
-                    }
-                    HStack{
-                        DatePicker("Date Of Birth", selection: $dateOfBirth, displayedComponents: .date).onChange(of: dateOfBirth, perform: { (value) in
-                            print("dateOfBirth changed to \(value)")
-                            detailsChanged = true
-                        })
-                    }
-                    HStack{
-                        Toggle("Coeliac Disease?", isOn: $coeliac).onChange(of: coeliac, perform: { (value) in
-                            print("Coeliac changed to \(value)")
-                            detailsChanged = true
-                        })
-                    }
-                    HStack{
-                        Toggle("Vegetarian", isOn: $vegetarian).onChange(of: vegetarian, perform: { (value) in
-                            print("Vegetarian changed to \(value)")
-                            detailsChanged = true
-                        })
-                    }
-                    HStack{
-                        Toggle("Vegan", isOn: $vegan).onChange(of: vegan, perform: { (value) in
-                            print("Vegan changed to \(value)")
-                            detailsChanged = true
-                        })
-                    }
-                    HStack{
-                        Button(action: {
-                            showChangeEmailSheet = true
-                        }){
-                            Text("Change email")
-                        }
-                    }.sheet(isPresented: $showChangeEmailSheet){
-                        changeEmailSheet(isPresented: self.$showChangeEmailSheet)
-                    }
-                    HStack{
-                        Button(action: {
-                            showChangePasswordSheet = true
-                        }){
-                            Text("Change password")
-                        }.sheet(isPresented: $showChangePasswordSheet){
-                            changePasswordSheet(isPresented: self.$showChangePasswordSheet)
-                        }
+                }.sheet(isPresented: $showChangeEmailSheet){
+                    changeEmailSheet(isPresented: self.$showChangeEmailSheet)
+                }
+                HStack{
+                    Button(action: {
+                        showChangePasswordSheet = true
+                    }){
+                        Text("Change password")
+                    }.sheet(isPresented: $showChangePasswordSheet){
+                        changePasswordSheet(isPresented: self.$showChangePasswordSheet)
                     }
                 }
-                
-                // Button for saving changes
-                .navigationBarItems(trailing: Button(action: {
-                    showSaveWarn = true
-                }) {
-                    Text("Save").bold()
-                }.disabled(!detailsChanged))
-                .navigationBarTitle("User Details", displayMode: .inline)
+            }
+            
+            // Button for saving changes
+            .navigationBarItems(trailing: Button(action: {
+                showSaveWarn = true
+            }) {
+                Text("Save").bold()
+            }.disabled(!detailsChanged))
+            .navigationBarTitle("User Details", displayMode: .inline)
             .alert(isPresented:$showSaveWarn){
                 Alert(title: Text("Save?"), message: Text("Are you sure you want to Save?"), primaryButton: .destructive(Text("Save")){
                     saveChanges()
@@ -242,6 +252,7 @@ struct UserDetailsView: View {
                 }, secondaryButton: .cancel())
             }
             .onAppear(){
+                // Fill out form with current details
                 self.firstName = user.firstName!
                 self.lastName = user.lastName!
                 self.email = user.email!
@@ -257,6 +268,7 @@ struct UserDetailsView: View {
         print("Attempting to save changes to user details")
         if let user = session.session {
             let userRef = db.collection("users").document(user.uid)
+            // As form variables contain previous data, all fields can be updated to update fields that have changed
             userRef.updateData([
                 "firstName" : firstName,
                 "lastName" : lastName,
@@ -270,6 +282,7 @@ struct UserDetailsView: View {
                     print("Error updating document: \(err)")
                 } else {
                     print("Document successfully updated")
+                    // Update local data
                     detailsChanged = false
                     user.firstName = firstName
                     user.lastName = lastName

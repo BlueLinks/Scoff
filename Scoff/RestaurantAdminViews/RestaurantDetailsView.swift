@@ -55,6 +55,7 @@ struct RestaurantDetailsView: View {
                                 }
                             })
                         }
+                        // Button to allow restaurant splash image to be changed
                         Button(action: {
                             self.showingImagePicker = true
                         }){
@@ -62,6 +63,7 @@ struct RestaurantDetailsView: View {
                                 Text("Select image")
                                 Spacer()
                                 if !imageSelected{
+                                    // Show current image
                                     if restaurant.picture != ""{
                                         URLImage(url: URL(string: restaurant.picture)!){ image in
                                             image
@@ -71,6 +73,7 @@ struct RestaurantDetailsView: View {
                                     }
                                 } else {
                                     if imageToDisplay != nil {
+                                        // Show new image
                                         imageToDisplay?
                                             .resizable()
                                             .scaledToFit()
@@ -107,6 +110,7 @@ struct RestaurantDetailsView: View {
     
     
     func saveChanges(){
+        // Save new changes
         print("Attempting to save changes to user details")
         if session.session != nil {
             let userRef = db.collection("restaurants").document(restaurant.id)
@@ -127,6 +131,7 @@ struct RestaurantDetailsView: View {
     }
     
     func getData() {
+        // Download restaurant information
         if let user = session.session{
             db.collection("restaurants").document(user.restaurantID!).getDocument { (document, err) in
                 
@@ -136,6 +141,7 @@ struct RestaurantDetailsView: View {
                 }
                 
                 if let restaurant = document{
+                    // restaurant document downloaded succesfull
                     let name = restaurant.get("name") as! String
                     let email = restaurant.get("email") as! String
                     self.restaurant =  restaurantRaw(id: restaurant.documentID, name: name, picture: restaurant.get("splash_image") as! String, email: email)
@@ -150,6 +156,7 @@ struct RestaurantDetailsView: View {
     }
     
     func loadImage() {
+        // load image user has selected
         guard let inputImage = inputImage else { return }
         imageToDisplay = Image(uiImage: inputImage)
         image = inputImage
@@ -158,11 +165,13 @@ struct RestaurantDetailsView: View {
     }
     
     func uploadImage(){
+        // Upload selected image to cloud storage
         let storage = Storage.storage()
         let storageRef = storage.reference()
         let splashRef = storageRef.child("restaurants/\(restaurant.id)/splash.jpg")
         let localImage = image!.jpegData(compressionQuality: 0.15)
         
+        // Start upload task
         let uploadTask = splashRef.putData(localImage!, metadata: nil) { (metadata, error) in
             
             
@@ -200,6 +209,7 @@ struct RestaurantDetailsView: View {
         }
         
         uploadTask.observe(.success) { snapshot in
+            // upload finished
             showUploadProgress = false
             
             if let user = session.session{
@@ -208,6 +218,7 @@ struct RestaurantDetailsView: View {
                         print("ERROR")
                         return
                     }
+                    // update spalsh image url in cloud firestore
                     let splashImageUrlString = downloadURL.absoluteString
                     db.collection("restaurants").document(user.restaurantID!).updateData([
                         "splash_image" : splashImageUrlString
