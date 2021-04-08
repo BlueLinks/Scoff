@@ -79,31 +79,6 @@ struct SignInView : View {
                     }
                     .padding().background(Color.green)
                 }
-                
-                Button(action: {
-                    email = "testaurant@email.com"
-                    password = "password1"
-                    signIn()
-                }) {
-                    HStack{
-                        Spacer()
-                        Text("Restaurant dev sign in")
-                        Spacer()
-                    }
-                    .padding().background(Color.black)
-                }
-                Button(action: {
-                    email = "test@email.com"
-                    password = "password1"
-                    signIn()
-                }) {
-                    HStack{
-                        Spacer()
-                        Text("Customer dev sign in")
-                        Spacer()
-                    }
-                    .padding().background(Color.yellow)
-                }
             }.alert(isPresented: $signInError) {
                 Alert(title: Text("Error Signing In"), message: Text(self.error!), dismissButton: .default(Text("Got it!")))
             }
