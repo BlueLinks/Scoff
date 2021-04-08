@@ -169,7 +169,7 @@ struct addNewItemSheet: View {
             .navigationBarItems(trailing: Button(action: {
                 isPresented = false
             }) {
-                Text("Canel").bold()
+                Text("Cancel").bold()
             })
         }
     }
