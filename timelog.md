@@ -7,11 +7,6 @@
 
 ## Guidance
 
--   This file contains the time log for your project. It will be submitted along with your final dissertation.
--   **YOU MUST KEEP THIS UP TO DATE AND UNDER VERSION CONTROL.**
--   This timelog should be filled out honestly, regularly (daily) and accurately. It is for _your_ benefit.
--   Follow the structure provided, grouping time by weeks. Quantise time to the half hour.
-
 ## Week 3
 
 ### 6 Oct 2020
@@ -21,7 +16,7 @@
 
 ### 7 Oct 2020
 
--   _2 hours_ Game-Based Learning: Puzzle Prog
+-   _2 hours_ Reading Game-Based Learning: Puzzle Prog Dissertation
 
 ### 11 Oct 2020
 
@@ -196,6 +191,80 @@
 
 -   _5 hours_ Restaurant admins can now modify menus, items and their extras as including modifying images for items.
 
-# Week 20
+## Week 20
+
+### 7 Feb 2021
 
 -   _0.5 hours_ If a user has items in their basket, they will be warned when moving back to the restaurant selection screen that their basket will be emptied.
+
+## Week 22
+
+### 19 Feb 2021
+
+-   _5 hours_ Created and published customer user evaluation survey including demonstration video.
+
+## Week 23
+
+### 24 Feb 2021
+
+-   _6 hours_ Began writing dissertation.
+
+### 27 Feb 2021
+
+-   _2 hours_ Continued writing dissertation.
+
+## Week 24
+
+### 4 March 2021
+
+-   _5 hours_ Continued writing dissertation.
+
+## Week 25
+
+### 10 March 2021
+
+-   _5 hours_ Continued writing dissertation.
+
+### 11 March 2021
+
+-   _7 hours_ Continued writing dissertation.
+
+### 12 March 2021
+
+-   _5 hours_ Continued writing dissertation and submitted draft.
+
+## Week 26
+
+### 17 March 2021
+
+-   _6 hours_ Continued writing dissertation and created restaurant staff user evaluation.
+
+## Week 27
+
+### 25 March 2021
+
+-   _6 hours_ Conducted restaurant staff user evaluation.
+
+## Week 28
+
+### 2 April 2021
+
+-   _4 hours_ Fixed several remaining bugs.
+
+## Week 29
+
+### 6 April 2021
+
+-   _8 hours_ Continued writing dissertation, wrote readme and manual.
+
+### 7 April 2021
+
+-   _8 hours_ Continued writing dissertation, updated Podfile to remove stripe dependency and recorded video presentation.
+
+### 8 April 2021
+
+-   _7 hours_ Continued writing dissertation, added more comments to the code, removed unnecessary files, fixed typos, and removed buttons to automatically sign into the two types of user accounts used for development purposes.
+
+### 8 April 2021
+
+-   _7 hours_ Finished writing dissertation
